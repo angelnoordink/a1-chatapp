@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('userbirthdate', data.userbirthdate);
         sessionStorage.setItem('userage', data.userage.toString());
         
-        this.router.navigateByUrl("/account");
+        this.router.navigateByUrl("");
       }
       else { alert("email or password incorrect");}
     })
