@@ -1,12 +1,22 @@
 .chatform {
-    max-width: 800px;
+    max-width: 1000px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     padding-left: 50px;
     padding-right: 50px;
-    padding-top: 10px;
-    padding-bottom: 1px;
+    padding-top: 20px;
+    padding-bottom: 10px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.changeform {
+    max-width: 1000px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    padding-left: 50px;
+    /* padding-right: 50px; */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
 }
 
 .messagebox {
@@ -21,4 +31,13 @@
     margin-right: auto;
     background-color: #f1f4f8;
     border-radius: 10px;
+}
+
+.noticediv {
+    border: 1px solid lightgray; 
+    border-radius: 5px; 
+    min-height: 50px; 
+    margin-left: 20px; 
+    margin-right: 20px;
+    margin-top: 10px;
 }

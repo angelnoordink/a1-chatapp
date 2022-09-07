@@ -9,3 +9,7 @@
 .content > mat-card {
     width: 200px;
 }
+
+mat-card {
+    cursor: pointer;
+}

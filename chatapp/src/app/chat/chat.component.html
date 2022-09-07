@@ -3,23 +3,61 @@
         <div class="tab-content" style="padding-top: 30px;">
             <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
                 <form>
-                    <div class="form-outline mb-4">
-                        <label class="form-label" for="newMessage" style="font-weight: bold;">Message</label>
+
+                    <h2>{{groupName}} Chat</h2>
+                    <div class="form-outline mb-4" style="margin-top: 20px;">
                         <div class="row">
-                            <div class="col-9">
-                                <input type="text" name="newMessage" class="form-control" [(ngModel)]="newMessage" (keyup)="$event.keyCode == 13 && sendMessage()"/>
+                            <div class="col-3">
+                                <label class="form-label" for="roomsList" style="font-weight: bold;">Room</label>
+                                <select class="form-select" name="roomsList" id="#" [(ngModel)]="roomsList" [disabled] = 'isinRoom'>
+                                    <option value="{{room}}" *ngFor="let room of rooms">
+                                        {{room}}
+                                    </option>
+                                 </select>
+                            </div>
+                            <div class="col-2" *ngIf="!isinRoom">
+                                <button class="btn btn-primary btn-block mb-4" style="width: 130px; margin-top: 30px;" (click)="joinRoom()" >Join Room</button>
+                            </div>
+                            <div class="col-6" *ngIf="isinRoom">
+                                <label class="form-label" for="messagecontent" style="font-weight: bold;">New Message</label>
+                                <input type="text" name="messagecontent" class="form-control" [(ngModel)]="messagecontent" *ngIf="isinRoom">
                             </div>
                             <div class="col-2">
-                                <button class="btn btn-primary btn-block mb-4" style="width: 120px;" (click)="sendMessage()">Send </button>
+                                <button class="btn btn-primary btn-block mb-4" style="width: 120px; margin-top: 30px;" (click)="sendMessage()" *ngIf="isinRoom">Send </button>
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-5">
+                                <label class="form-label" for="newRoom" style="font-weight: bold;">New Room</label>
+                                <input type="text" name="newRoom" class="form-control" [(ngModel)]="newRoom" [disabled] = 'isinRoom'/>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-success btn-block mb-4" style="width: 130px; margin-top: 30px;" (click)="addRoom()" [disabled] = 'isinRoom'>Add Room</button>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-primary btn-block mb-4" style="width: 130px; margin-top: 30px;" (click)="clearNotice()" *ngIf="isinRoom">Clear Notices</button>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-light btn-block mb-4" style="width: 130px; margin-top: 30px;" (click)="leaveRoom()" *ngIf="isinRoom">Leave Room</button>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="isinRoom">
+                           <label style="font-weight: bold;">Notices</label>
+                           <div style="border: 1px solid lightgray; border-radius: 5px; min-height: 50px; margin-left: 10px; margin-right: 200px;">{{roomNotice}}</div>
+                            
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
+    </div>        
+    <!-- <h3 style="text-align: center; margin-left:auto; margin-right:auto;">Groups</h2> -->
+    <h3 *ngIf="isinRoom" style="text-align: center; margin-left:auto; margin-right:auto; margin-top: 30px;">
+        Chat Messages for {{currentRoom}} - {{numUsers}} Active Users
+    </h3>
 
-    <div *ngFor="let message of messageList">
+    <div *ngFor="let message of messages">
         <div class ="messagebox" *ngIf="message">
             <p>{{message}}</p>
         </div>

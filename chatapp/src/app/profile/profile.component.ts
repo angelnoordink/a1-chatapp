@@ -25,10 +25,10 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private httpClient: HttpClient
   ) { 
-    if (!(sessionStorage.getItem('userlogin')=="true")){
-      alert("login please");
-      this.router.navigateByUrl("/login");
-    }
+    // if (!(sessionStorage.getItem('userlogin')=="true")){
+    //   alert("login please");
+    //   this.router.navigateByUrl("/login");
+    // }
     this.username = sessionStorage.getItem('username')!;
     this.userbirthdate = sessionStorage.getItem('userbirthdate')!;
     this.userage = Number(sessionStorage.getItem('userage'));
@@ -54,6 +54,8 @@ export class ProfileComponent implements OnInit {
 
     this.httpClient.post<Userobj[]>(BACKEND_URL + '/loginafter', userobj,  httpOptions)
       .subscribe((m: any) => {alert(JSON.stringify(m));});
+
+    this.router.navigateByUrl("/account");
   }
 
 }
