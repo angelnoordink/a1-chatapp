@@ -1,0 +1,25 @@
+<div class="loginform">
+    <h2>Login</h2>
+    <div class="tab-content" style="padding-top: 30px;">
+        <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+            <form>
+
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+                <label class="form-label" for="email" style="font-weight: bold;">Email</label>
+                <input type="email" name="email" class="form-control" [(ngModel)]="email"/>
+            </div>
+
+            <!-- Password input -->
+            <div class="form-outline mb-4">
+                <label class="form-label" for="password" style="font-weight: bold;">Password</label>
+                <input type="password" name="password" class="form-control" [(ngModel)]="password"/>
+            </div>
+
+            <!-- Submit button -->
+            <button (click)="submit()" class="btn btn-primary btn-block mb-4" style="width: 120px;">Sign in</button>
+
+            </form>
+        </div>
+    </div>
+</div>

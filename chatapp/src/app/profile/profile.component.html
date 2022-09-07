@@ -1,0 +1,36 @@
+<div class="profileinfo container" style="margin-left: auto; margin-right:auto"> 
+    <div class="row">
+        <div class="col-3 info">
+            <h2>Profile</h2>
+            <img src="../../assets/images/user.png" width="100px;" >
+        </div>
+        <div class="col-9">
+            <form>
+                <table class="table" >
+                    <tbody>
+                    <tr>
+                        <th>ID:</th>
+                        <input type="number" name="userid" [(ngModel)]="userid" class="form-control">
+                    </tr>
+                    <tr>
+                        <th>Username by email:</th>
+                        <input type="email" name="username" [(ngModel)]="username" class="form-control">
+                    </tr>
+                    <tr>
+                        <th>Birthdate</th>
+                        <input type="date" name="userbirthdate" [(ngModel)]="userbirthdate" class="form-control">
+                    </tr>
+                    <tr>
+                        <th>Age</th>
+                        <input type="text" name="userage" [(ngModel)]="userage" class="form-control">
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><button id="submit" (click)="editFunc()" class="btn btn-primary btn-block mb-4" style="width: 150px;">Update</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>  
+    </div>
+</div>
