@@ -25,10 +25,7 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private httpClient: HttpClient
   ) { 
-    // if (!(sessionStorage.getItem('userlogin')=="true")){
-    //   alert("login please");
-    //   this.router.navigateByUrl("/login");
-    // }
+
     this.username = sessionStorage.getItem('username')!;
     this.userbirthdate = sessionStorage.getItem('userbirthdate')!;
     this.userage = Number(sessionStorage.getItem('userage'));

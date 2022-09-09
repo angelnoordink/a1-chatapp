@@ -1,5 +1,16 @@
 [
-    {"userid":1,"username":"k.su@griffith.edu.au","userbirthdate":"2022-12-23","userage":30},
+    {"userid":1,"username":"k.su@griffith.edu.au","userbirthdate":"2022-12-23","userage":30, "groups": [
+        { 
+            "group_name": "3702ICT",
+            "role": "Member",
+            "rooms": ["Home", "Off topic"]
+        },
+        {
+            "group_name": "1007ICT",
+            "role": "Group_Admin",
+            "rooms": ["Home", "Assignments"]
+        }
+    ]},
     {"userid":2,"username":"kailepku@gmail.com","userbirthdate":"2022-09-23","userage":22},
     {"userid":3,"username":"angel@gmail.com","userbirthdate":"2002-08-01","userage":20}
 ]

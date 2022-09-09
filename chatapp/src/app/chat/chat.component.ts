@@ -73,7 +73,6 @@ export class ChatComponent implements OnInit {
     this.roomsList = "";
     this.currentRoom = "";
     this.isinRoom = false;
-    this.numUsers = 0;
     this.roomNotice = "A user has left the room.";
     this.messages = [];
   }

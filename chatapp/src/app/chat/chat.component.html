@@ -58,7 +58,7 @@
     </h3>
 
     <div *ngFor="let message of messages">
-        <div class ="messagebox">
+        <div class ="messagebox" *ngIf="message">
             <p>{{message}}</p>
         </div>
     </div>
