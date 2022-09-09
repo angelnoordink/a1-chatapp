@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { io } from "socket.io-client";
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +14,7 @@ export class ChatService {
   
   constructor() {}
 
-  socket = io('http://localhost:3000');
+  socket = io('http://localhost:3000/chat');
 
   
   joinRoom(selRoom: any): void {
@@ -52,11 +53,15 @@ export class ChatService {
     this.socket.on('notice', res=>next(res));
   }
 
-  getMessage (next: any) {
-    this.socket.on('message', message=>next(message));
+  getMessage () {
+    this.socket.on('message', (message) =>{
+      this.message$.next(message);
+    });
+
+    return this.message$.asObservable();
   }
 
-  sendMessage(message: any):void {
+  sendMessage(message: string):void {
     this.socket.emit('message', message);
   }
 

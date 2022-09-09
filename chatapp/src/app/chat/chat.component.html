@@ -20,7 +20,7 @@
                             </div>
                             <div class="col-6" *ngIf="isinRoom">
                                 <label class="form-label" for="messagecontent" style="font-weight: bold;">New Message</label>
-                                <input type="text" name="messagecontent" class="form-control" [(ngModel)]="messagecontent" *ngIf="isinRoom">
+                                <input type="text" name="messagecontent" id ="messagecontent" class="form-control" [(ngModel)]="messagecontent" *ngIf="isinRoom" (keyup)="$event.keyCode == 13 && sendMessage()">
                             </div>
                             <div class="col-2">
                                 <button class="btn btn-primary btn-block mb-4" style="width: 120px; margin-top: 30px;" (click)="sendMessage()" *ngIf="isinRoom">Send </button>
@@ -58,7 +58,7 @@
     </h3>
 
     <div *ngFor="let message of messages">
-        <div class ="messagebox" *ngIf="message">
+        <div class ="messagebox">
             <p>{{message}}</p>
         </div>
     </div>

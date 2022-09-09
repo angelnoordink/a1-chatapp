@@ -8,16 +8,17 @@ module.exports = {
         const chat = io.of('/chat');
 
         chat.on('connection',(socket) => {
+            console.log('User connection on port '+ PORT + ' : ' + socket.id);
 
-            socket.on('message',(message)=>{
+            socket.on('message', (message)=>{
                 for (i=0; i<socketRoom.length; i++){
                     if (socketRoom[i][0] == socket.id) {
-                        chat.to(socketRoom[i][0]).emit('message', message);
+                        chat.to(socketRoom[i][1]).emit('message', message);
                     }
                 }
             });
 
-            socket.on('newRoom', (newsroom)=>{
+            socket.on('newRoom', (newRoom)=>{
                 if (rooms.indexOf(newRoom) == -1 ) {
                     rooms.push(newRoom);
                     chat.emit('rooms', JSON.stringify(rooms));
@@ -26,7 +27,6 @@ module.exports = {
 
             socket.on('roomList', (m)=>{
                 chat.emit('roomList', JSON.stringify(rooms));
-                console.log(rooms);
             });
 
             socket.on('numUsers', (room)=>{
@@ -76,11 +76,10 @@ module.exports = {
             });
 
             socket.on("leaveRoom", (room)=> {
-                
                 for(let i=0; i<socketRoom.length; i++) {
                     if (socketRoom[i][0] == socket.id){
                         socketRoom.splice(i,1);
-                        socket.leace(room);
+                        socket.leave(room);
                         chat.to(room).emit("notice", "A user has left");
                     }
                 }
@@ -97,20 +96,20 @@ module.exports = {
                 
             });
 
-            socket.on('disconnect', ()=>{
-                chat.emit("disconnect");
-                for (let i=0; i<socketRoom.length; i++) {
-                    if (socketRoom[i][0] == socket.room){
-                        socketRoom.splice(i,1);
-                    } 
-                }
-                for (let j=0; j < socketRoomNum.length; j++){
-                    if(socketRoomNum[j][0] == socketRoom) {
-                        socketRoomNum[j][1] = socketRoomNum[j][1] -1;
-                    }
-                }
-                console.log("Client disconnected.")
-            });
+            // socket.on('disconnect', ()=>{
+            //     chat.emit("disconnect");
+            //     for (let i=0; i<socketRoom.length; i++) {
+            //         if (socketRoom[i][0] == socket.room){
+            //             socketRoom.splice(i,1);
+            //         } 
+            //     }
+            //     for (let j=0; j < socketRoomNum.length; j++){
+            //         if(socketRoomNum[j][0] == socketRoom) {
+            //             socketRoomNum[j][1] = socketRoomNum[j][1] -1;
+            //         }
+            //     }
+            //     console.log("Client disconnected.")
+            // });
             
         });
 

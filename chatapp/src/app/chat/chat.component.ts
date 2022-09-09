@@ -4,14 +4,14 @@ import { FormBuilder } from '@angular/forms';
 import { ChatService } from '../services/chat.service';
 import { io } from "socket.io-client";
 
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
-  socket = io('http://localhost:3000');
-
+  
   messagecontent: string = '';
   groupName: string = '';
   roomName: string = "";
@@ -34,7 +34,9 @@ export class ChatComponent implements OnInit {
 
   
   ngOnInit(): void {
-    this.chatService.getMessage((message: any)=>{this.messages.push(message)});
+    this.chatService.getMessage().subscribe((message: string) => {
+      this.messages.push(message);
+    });
     this.chatService.reqRoomList();
     this.chatService.getRoomList((msg:any)=>{this.rooms = JSON.parse(msg)});
     console.log(this.rooms)
@@ -88,6 +90,7 @@ export class ChatComponent implements OnInit {
   }
 
   sendMessage() {
+    console.log("Message  " + this.messagecontent);
     if(this.messagecontent){
       this.chatService.sendMessage(this.messagecontent);
       this.messagecontent = "";
