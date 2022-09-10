@@ -15,8 +15,8 @@ const httpOptions = {
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
+
 export class ChatComponent implements OnInit {
-  
   messagecontent: string = '';
   group: any;
   groupID: any;
@@ -34,6 +34,7 @@ export class ChatComponent implements OnInit {
   numUsers: number= 0;
   groups: [] = [];
   username = "";
+  role: string = "";
   
 
   constructor(
@@ -57,6 +58,7 @@ export class ChatComponent implements OnInit {
     this.groupName = this.group.group_name;
     this.rooms = this.group.rooms;
     
+    this.role = localStorage.getItem('role')!;
     
     this.chatService.getMessage().subscribe((message: string) => {
       this.messages.push(message);
@@ -83,7 +85,6 @@ export class ChatComponent implements OnInit {
     this.currentRoom = this.roomsList
     this.isinRoom = true;
     this.roomNotice = "A new user has joined";
-    
   }
 
   clearNotice() {

@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AppComponent {
   title = 'a1-chatapp';
   username = localStorage.getItem('username');
+  userlogin = "";
   loggedIn = false;
 
   constructor(
@@ -20,6 +21,9 @@ export class AppComponent {
     } else {
       this.loggedIn = false;
     }
+    setTimeout(() => {
+      this.userlogin = localStorage.getItem('userlogin')!;
+    }, 3000);
   }
 
   logout() {

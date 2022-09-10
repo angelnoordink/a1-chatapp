@@ -58,7 +58,6 @@ module.exports = {
                 socket.emit('notice', "Welcome to the room");
             });
 
-            
 
             socket.on("leaveRoom", (room)=> {
                 for(let i=0; i<socketRoom.length; i++) {
@@ -66,6 +65,7 @@ module.exports = {
                         socketRoom.splice(i,1);
                         socket.leave(room);
                         chat.to(room).emit("notice", "A user has left");
+                        socket.emit('notice', "A user has left");
                     }
                 }
 

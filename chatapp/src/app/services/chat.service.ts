@@ -48,9 +48,10 @@ export class ChatService {
   getRoomList(next:any) {
     this.socket.on('roomList', res=>next(res));
   }
+  
 
-  getGroups(data:any) {
-    this.socket.on('getGroups', res=>data(res));
+  getGroups(next:any) {
+    this.socket.on('getGroups', res=>next(res));
   }
 
   notice(next:any) {

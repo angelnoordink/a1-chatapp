@@ -18,8 +18,7 @@ const BACKEND_URL = 'http://localhost:3000';
 export class ProfileComponent implements OnInit {
   userid = 0;
   username = "";
-  userbirthdate = "";
-  userage = 0;
+  email = "";
 
   constructor(
     private router: Router,
@@ -27,8 +26,7 @@ export class ProfileComponent implements OnInit {
   ) { 
 
     this.username = localStorage.getItem('username')!;
-    this.userbirthdate = localStorage.getItem('userbirthdate')!;
-    this.userage = Number(localStorage.getItem('userage'));
+    this.email = localStorage.getItem('email')!;
     this.userid = Number(localStorage.getItem('userid'));
   }
 
@@ -39,20 +37,19 @@ export class ProfileComponent implements OnInit {
     let userobj = {
       'userid': this.userid,
       'username': this.username, 
-      'userbirthdate': this.userbirthdate, 
-      'userage': this.userage
+      'email': this.email
     }
 
     
     localStorage.setItem('username', this.username);
-    localStorage.setItem('userbirthdate', this.userbirthdate);
-    localStorage.setItem('userage', this.userage.toString());
-    localStorage.setItem('userid', this.userage.toString());
+    localStorage.setItem('email', this.email);
+    localStorage.setItem('userid', this.userid.toString());
 
     this.httpClient.post<Userobj[]>(BACKEND_URL + '/loginafter', userobj,  httpOptions)
       .subscribe((m: any) => {alert(JSON.stringify(m));});
 
     this.router.navigateByUrl("/account");
   }
+  
 
 }

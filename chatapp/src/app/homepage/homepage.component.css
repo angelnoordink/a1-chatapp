@@ -1,5 +1,7 @@
 .content {
-    padding: 16px;
+    padding-right: 16px;
+    padding-left: 16px;
+    padding-top: 16px;
     margin-left: auto;
     margin-right: auto;
     justify-content: center;
@@ -12,4 +14,24 @@
 
 mat-card {
     cursor: pointer;
+}
+
+.centerbtn{
+    width: 120px; 
+    margin-top: 10px; 
+    margin-left: auto; 
+    margin-right: auto; 
+    display: flex; 
+    justify-content: center;
+}
+
+.groupform {
+    max-width: 800px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 25px;
+    padding-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
 }

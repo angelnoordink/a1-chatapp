@@ -4,6 +4,7 @@ module.exports = function(req, res) {
     var u = req.body.username;
     var p = req.body.pwd;
     c = u + p;
+    var data;
     console.log(c);
     fs.readFile('./data/users.json', 'utf8', function(err, data) {
         // the above path is with respect to where we run server.js

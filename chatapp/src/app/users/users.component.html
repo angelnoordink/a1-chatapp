@@ -1,0 +1,35 @@
+<div>
+    <div class="tab-content" style="padding-top: 20px;">
+        <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+            <form >
+                <h2 class="centertext">Users</h2>
+                <button class="btn btn-success btn-block mb-4 c centerbtn" *ngIf="!createGroup">Create Users </button>
+            </form>
+        </div>
+    </div>
+    <p class="centertext">Select Role to change</p>
+    <div>
+        <div class ="messagebox row" *ngFor="let user of userList" >
+            <div class="col-1">
+                <img src="../../assets/images/user.png" style="width: 40px; height: 60px; padding-bottom: 20px;">
+            </div>
+            <div class="col-2">
+                <p style="font-size: 20px; padding-top:5px"><b>{{user.username}}</b></p>
+            </div>
+            <div class="col-3">
+                <select class="form-control" name="sel" 
+                    [(ngModel)]="user.role" (ngModelChange)="updateRole($event.target)" [disabled] ="myrole != 'Super_Admin'">
+                <option *ngFor="let role of roleList" [ngValue]="role">
+                    {{role}}
+                </option>
+                </select>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-secondary btn-block mb-4" style="width: 120px;" [disabled] ="myrole == 'Super_Admin' || myrole == 'Office_Admin'">Assign </button>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-danger btn-block mb-4" style="width: 120px;" [disabled] ="myrole != 'Super_Admin'" >Delete </button>
+            </div>
+        </div>
+    </div>
+</div>

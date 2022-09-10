@@ -1,13 +1,17 @@
 [{
-    "username": "k.su@griffith.edu.au",
+    "username": "kaile.su",
     "pwd": "666666" 
 },
 {
-    "username": "kailepku@gmail.com",
+    "username": "allan.br",
     "pwd": "55555"
 },
 {
-    "username": "angel@gmail.com",
+    "username": "angel.no",
+    "pwd": "1234"
+},
+{
+    "username": "mish.no",
     "pwd": "1234"
 }
 ]

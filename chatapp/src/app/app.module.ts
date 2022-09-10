@@ -18,6 +18,7 @@ import { ChatComponent } from './chat/chat.component';
 import { ChatService } from './services/chat.service';
 import { AuthGuard } from './services/authguard.service';
 import { HomepageComponent } from './homepage/homepage.component';
+import { UsersComponent } from './users/users.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { HomepageComponent } from './homepage/homepage.component';
     AccountComponent,
     ChatComponent,
     HomepageComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,

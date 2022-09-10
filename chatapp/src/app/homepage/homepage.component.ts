@@ -7,6 +7,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChatService } from '../services/chat.service';
 import { Router } from '@angular/router';
+import { Userobj } from '../userobj';
+import { group } from '@angular/animations';
 
 
 const httpOptions = {
@@ -22,9 +24,23 @@ const BACKEND_URL = 'http://localhost:3000';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-  newGroup: string = '';
   groupList: any;
   groupString: any;
+  createGroup: Boolean = false;
+
+  newGroupName: string = '';
+  newRoom: string = '';
+  newRoomList: any = [];
+  inputUsername: string = '';
+  inputEmail: string = '';
+  groupId: number = 0;
+  newUserList: any = [];
+  newUserListOutput: any = [];
+  newGroupList: any =[];
+  dataList: any =[];
+  nrl: string = '';
+  newGroup: any = [];
+
 
   constructor(
     private browserAnimationsModule: BrowserAnimationsModule,
@@ -38,6 +54,8 @@ export class HomepageComponent implements OnInit {
     ) { 
       this.groupString = localStorage.getItem('groups');
       this.groupList = JSON.parse(this.groupString);
+
+      this.dataList = localStorage.getItem("data")!;
     }
 
   ngOnInit(): void {
@@ -45,7 +63,47 @@ export class HomepageComponent implements OnInit {
 
   onSelect(group_id:any){
     this.router.navigate(['/chat', group_id]);
-    // console.log(typeof(group_id));
   }
 
+  showCreateGroupRegion() {
+    this.createGroup = true;
+  }
+
+  assignUser() {
+    
+    this.newUserListOutput.push(JSON.stringify({username: this.inputUsername, email: this.inputEmail}));
+    this.newUserList.push({username: this.inputUsername, email: this.inputEmail});
+
+
+    let userobj = {
+      'username': this.inputUsername, 
+      'email': this.inputEmail
+    }
+
+    
+
+    localStorage.getItem("data");
+
+    this.inputUsername = "";
+    this.inputEmail = "";
+  }
+
+
+  
+  assignRooms() {
+
+    for (let i = 0; i < this.newUserList.length; i++) {
+      // {username: this.inputUsername, email: this.inputEmail}
+    }
+    
+    this.newRoomList.push(this.newRoom);
+    console.log(this.newRoomList);
+    this.newRoom = "";
+  }
+
+  createNewGroup() {
+    
+
+    
+  }
 }

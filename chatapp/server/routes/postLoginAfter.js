@@ -4,8 +4,7 @@ module.exports = function(req, res) {
     let userobj = {
         "userid": req.body.userid,
         "username": req.body.username,
-        "userbirthdate": req.body.userbirthdate,
-        "userage": req.body.userage
+        "email": req.body.email,
     }
     let uArray = [];
     fs.readFile('./data/extendedUsers.json', 'utf8', function(err, data) {
@@ -18,7 +17,7 @@ module.exports = function(req, res) {
         if (i == -1) {
             uArray.push(userobj);
         } else {
-            uArray[i] = userobj;
+            console.log(userobj)
         }
         // send response to user
         res.send(uArray);

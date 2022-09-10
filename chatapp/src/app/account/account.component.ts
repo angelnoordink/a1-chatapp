@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 export class AccountComponent implements OnInit {
   // userlogin = localStorage.getItem('userlogin');
   username = localStorage.getItem('username');
-  userbirthdate = localStorage.getItem('userbirthdate');
-  userage = localStorage.getItem('userage');
+  email = localStorage.getItem('email');
+  role = localStorage.getItem('role');
 
 
   constructor(
