@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { ChatService } from '../services/chat.service';
 import { io } from "socket.io-client";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+}
 
 
 @Component({
@@ -13,31 +18,50 @@ import { io } from "socket.io-client";
 export class ChatComponent implements OnInit {
   
   messagecontent: string = '';
-  groupName: string = '';
+  group: any;
+  groupID: any;
+  groupName: string = "";
+  groupList: any;
+  groupString: any;
   roomName: string = "";
   roomsList: string = "";
   currentRoom: string = "";
   messages: string[] = [];
-  rooms: string[] = [ 'room1', 'room2', 'room3', 'room4' ];
+  rooms: string[] = [];
   newRoom: string = "";
   isinRoom: boolean = false;
   roomNotice: string = "";
   numUsers: number= 0;
+  groups: [] = [];
+  username = "";
+  
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private route: ActivatedRoute,
+    private httpClient: HttpClient
   ) { 
-
+    this.username = localStorage.getItem('username')!;
   }
 
   
   ngOnInit(): void {
+    this.groupID = this.route.snapshot.paramMap.get('group_id');
+
+    this.groupString = localStorage.getItem('groups');
+    this.groupList = JSON.parse(this.groupString);
+
+    this.group = this.groupList[this.groupID - 1];
+    this.groupName = this.group.group_name;
+    this.rooms = this.group.rooms;
+    
+    
     this.chatService.getMessage().subscribe((message: string) => {
       this.messages.push(message);
     });
-    this.chatService.reqRoomList();
+    this.chatService.reqRoomList(this.rooms);
     this.chatService.getRoomList((msg:any)=>{this.rooms = JSON.parse(msg)});
     console.log(this.rooms)
     this.chatService.notice((msg:any)=>{this.roomNotice = msg});
@@ -81,7 +105,7 @@ export class ChatComponent implements OnInit {
     this.chatService.createRoom(this.newRoom);
     this.currentRoom = this.newRoom
     this.roomsList = this.newRoom
-    this.chatService.reqRoomList();
+    this.chatService.reqRoomList(this.rooms);
     this.rooms.push(this.newRoom);
     this.isinRoom = true;
     this.newRoom = "";
@@ -97,6 +121,14 @@ export class ChatComponent implements OnInit {
       console.log('No Message');
     }
   }
+
+  getById(arr:any, id:any) {
+    for (var d = 0, len = arr.length; d < len; d += 1) {
+        if (arr[d].id === id) {
+            return arr[d];
+        }
+    }
+}
 
   
 }

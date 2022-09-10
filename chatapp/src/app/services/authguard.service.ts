@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
   canActivate() {
     //Your redirect logic/condition. I use this.
 
-    if (!(sessionStorage.getItem('userlogin')=="true")){
+    if (!(localStorage.getItem('userlogin')=="true")){
       // alert("Please Login");
       this.router.navigate(['/login']);
     }

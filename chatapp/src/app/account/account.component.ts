@@ -7,10 +7,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-  // userlogin = sessionStorage.getItem('userlogin');
-  username = sessionStorage.getItem('username');
-  userbirthdate = sessionStorage.getItem('userbirthdate');
-  userage = sessionStorage.getItem('userage');
+  // userlogin = localStorage.getItem('userlogin');
+  username = localStorage.getItem('username');
+  userbirthdate = localStorage.getItem('userbirthdate');
+  userage = localStorage.getItem('userage');
 
 
   constructor(

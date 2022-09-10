@@ -36,12 +36,20 @@ export class LoginComponent implements OnInit {
       alert("postRes: " +JSON.stringify(data));
       if (data.ok){
         alert("correct");
-        sessionStorage.setItem('userid', data.userid.toString());
-        sessionStorage.setItem('userlogin', data.ok.toString());
-        sessionStorage.setItem('username', data.username);
-        sessionStorage.setItem('userbirthdate', data.userbirthdate);
-        sessionStorage.setItem('userage', data.userage.toString());
+        localStorage.setItem('userid', data.userid.toString());
+        localStorage.setItem('userlogin', data.ok.toString());
+        localStorage.setItem('username', data.username);
+        localStorage.setItem('userbirthdate', data.userbirthdate);
+        localStorage.setItem('userage', data.userage.toString());
+
+        let groups: any = [];
+
+        data.groups.forEach((group:any) => {
+          groups.push({group_id: group.group_id, group_name: group.group_name, role: group.role, rooms: group.rooms});
+        });
+        localStorage.setItem("groups", JSON.stringify(groups));
         
+
         this.router.navigateByUrl("");
       }
       else { alert("email or password incorrect");}

@@ -41,12 +41,16 @@ export class ChatService {
     this.socket.on('numUsers', res=>next(res));
   }
 
-  reqRoomList() {
-    this.socket.emit('roomList', 'list please');
+  reqRoomList(rooms:any) {
+    this.socket.emit('roomList', (res: any)=>rooms(res));
   }
 
   getRoomList(next:any) {
     this.socket.on('roomList', res=>next(res));
+  }
+
+  getGroups(data:any) {
+    this.socket.on('getGroups', res=>data(res));
   }
 
   notice(next:any) {

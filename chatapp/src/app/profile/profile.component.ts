@@ -26,10 +26,10 @@ export class ProfileComponent implements OnInit {
     private httpClient: HttpClient
   ) { 
 
-    this.username = sessionStorage.getItem('username')!;
-    this.userbirthdate = sessionStorage.getItem('userbirthdate')!;
-    this.userage = Number(sessionStorage.getItem('userage'));
-    this.userid = Number(sessionStorage.getItem('userid'));
+    this.username = localStorage.getItem('username')!;
+    this.userbirthdate = localStorage.getItem('userbirthdate')!;
+    this.userage = Number(localStorage.getItem('userage'));
+    this.userid = Number(localStorage.getItem('userid'));
   }
 
   ngOnInit(): void {
@@ -44,10 +44,10 @@ export class ProfileComponent implements OnInit {
     }
 
     
-    sessionStorage.setItem('username', this.username);
-    sessionStorage.setItem('userbirthdate', this.userbirthdate);
-    sessionStorage.setItem('userage', this.userage.toString());
-    sessionStorage.setItem('userid', this.userage.toString());
+    localStorage.setItem('username', this.username);
+    localStorage.setItem('userbirthdate', this.userbirthdate);
+    localStorage.setItem('userage', this.userage.toString());
+    localStorage.setItem('userid', this.userage.toString());
 
     this.httpClient.post<Userobj[]>(BACKEND_URL + '/loginafter', userobj,  httpOptions)
       .subscribe((m: any) => {alert(JSON.stringify(m));});

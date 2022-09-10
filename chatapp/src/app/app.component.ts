@@ -8,22 +8,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'a1-chatapp';
-  username = sessionStorage.getItem('username');
+  username = localStorage.getItem('username');
   loggedIn = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
   ) { 
-    if (!(sessionStorage.getItem('userlogin')=="true")){
-      this.loggedIn = false;
-    } else {
+    if (localStorage.getItem('userlogin')=="true"){
       this.loggedIn = true;
+    } else {
+      this.loggedIn = false;
     }
   }
 
   logout() {
-    sessionStorage.clear();
+    localStorage.clear();
     this.router.navigate(['/login']);
     window.location.reload()
   }

@@ -4,6 +4,17 @@ import { MatCardModule} from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ChatService } from '../services/chat.service';
+import { Router } from '@angular/router';
+
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+}
+
+const BACKEND_URL = 'http://localhost:3000';
+
 
 @Component({
   selector: 'app-homepage',
@@ -12,28 +23,29 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 })
 export class HomepageComponent implements OnInit {
   newGroup: string = '';
-  
-  groupList = [
-    {"groupCode": "1007ICT", "groupName": "Computer Systems and Networks"},
-    {"groupCode": "1701ICT", "groupName": "Creative Coding"},
-    {"groupCode": "2807ICT", "groupName": "Programming Principles"},
-    {"groupCode": "2703ICT", "groupName": "Web Application Development"},
-    {"groupCode": "2808ICT", "groupName": "Information and Security Management"},
-    {"groupCode": "3702ICT", "groupName": "Games Development"},
-    {"groupCode": "3813ICT", "groupName": "Software Frameworks"},
-    {"groupCode": "3822ICT", "groupName": "Work Integrated Learning - Placement"},
-  ];
-
+  groupList: any;
+  groupString: any;
 
   constructor(
     private browserAnimationsModule: BrowserAnimationsModule,
+    private router: Router,
     private matCardModule: MatCardModule,
     private matToolbarModule: MatToolbarModule,
     private matButtonModule: MatButtonModule,
-    private flexLayoutModuleformBuilder: FlexLayoutModule
-    ) { }
+    private flexLayoutModuleformBuilder: FlexLayoutModule,
+    private httpClient: HttpClient,
+    private chatService: ChatService
+    ) { 
+      this.groupString = localStorage.getItem('groups');
+      this.groupList = JSON.parse(this.groupString);
+    }
 
   ngOnInit(): void {
+  }
+
+  onSelect(group_id:any){
+    this.router.navigate(['/chat', group_id]);
+    // console.log(typeof(group_id));
   }
 
 }
