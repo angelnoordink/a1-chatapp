@@ -3,11 +3,12 @@
 **Angelique Noordink - s5215609**  
   
 
-### To Do List
+## To Do List
 - [ ] Add Table of Contents
 - [ ] Video Recording of Site
 - [ ] ERD Diagram image
 - [ ] Add Personal details
+
 
 ---
 ## Git
@@ -50,7 +51,7 @@ Rooms is an array that consist of a room object. A room has an id and a room nam
 |                   | *room_id*             | Int()                 | Foreign Key (References room.room_id).                              |
 
 ### Database ERD
-![alt text](https://github.com/angelnoordink/a1-chatapp/blob/main/documentation/ERD.png?raw=true)
+<img src="https://github.com/angelnoordink/a1-chatapp/blob/main/documentation/ERD.png?raw=true" width="600" height="600"/>
 
 ---
 ## REST API
@@ -77,7 +78,7 @@ Technical Explanation paragraph.
 ### Get Users
 
 
-### Get User Groups/Rooms
+### Get User Groups
 
 
 ### Get User Details
@@ -91,7 +92,7 @@ Technical Explanation paragraph.
 
 ### Join User into Room
 
-
+  
 ### Create Group
 
 
