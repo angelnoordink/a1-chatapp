@@ -50,7 +50,6 @@ export class LoginComponent implements OnInit {
         });
         localStorage.setItem("groups", JSON.stringify(groups));
         
-
         this.router.navigateByUrl("");
       }
       else { alert("username or password incorrect");}
