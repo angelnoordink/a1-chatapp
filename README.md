@@ -42,7 +42,7 @@ Rooms is an array that consist of a room object. A room has an id and a room nam
 |                   | room_name             | String(30)            |                                                                     |
 |                   | *group_id*            | Int()                 | Foreign Key (References group.group_id).                            |
 | USER_GROUP        | <ins>*user_id*<ins>   | Int()                 | Primary Key, Foreign Key (References user.user_id).                 |
-|                   | <ins>*group_id*<ins>  | Int()                 | Primary Key, Foreign Key (References group.group_id).               |
+|                   | *group_id*            | Int()                 | Primary Key, Foreign Key (References group.group_id).               |
 |                   | role                  | Enum()                | Options will include; 'Group_Admin', 'Group_Assis" and 'Member'.    |
 | MESSAGE           | <ins>message_id<ins>  | Init()                | Primary Key, Unique, Incr.                                          |
 |                   | message               | String(5000)          |                                                                     |
