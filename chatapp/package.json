@@ -30,6 +30,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.5",
     "rxjs": "~7.5.0",
+    "passport":"*",
+    "passport-jwt":"*",
     "socket.io": "^4.5.2",
     "socket.io-client": "^4.5.2",
     "tslib": "^2.3.0",
