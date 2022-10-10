@@ -1,9 +1,10 @@
 const express = require('express');
 const path = require('path');
-const cors = require('cors');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const cors = require('cors');
 const passport = require('passport');
+const mongoose = require('mongoose');
+const config = require("./config/database");
 // const sockets = require('./socket.js');
 
 // var http = require("http").Server(app);
@@ -14,6 +15,18 @@ const passport = require('passport');
 //     }
 // });
 
+// Connect To Database
+mongoose.connect(config.database);
+
+// On Connection
+mongoose.connection.on('connected', () => {
+    console.log('Connected to database ' + config.database);
+});
+
+mongoose.connection.on('error', (err) => {
+    console.log('Database error: ' + err);
+});
+
 const app = express();
 
 const users = require('./routes/users');
@@ -21,14 +34,22 @@ const users = require('./routes/users');
 // Port Number
 const port = 3000;
 
-// CORS Middlewar
+// CORS Middleware
 app.use(cors());
 
-// Body Parser Middlewear
+// Set Static Folder
+app.use(express.static(path.join(__dirname, 'src')));
+
+// Body Parser Middleware
 app.use(bodyParser.json()); 
 
-app.use('/users', users);
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
+require('./config/passport')(passport);
+
+app.use('/users', users);
 
 // Index Route
 app.get('/', (req, res) => {
