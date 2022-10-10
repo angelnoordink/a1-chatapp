@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('username', data.username);
         localStorage.setItem('role', data.role);
         localStorage.setItem('email', data.email.toString());
-
+        
         let groups: any = [];
 
         localStorage.setItem("data", JSON.stringify(data));

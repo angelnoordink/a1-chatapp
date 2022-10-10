@@ -9,6 +9,8 @@ import { ChatService } from '../services/chat.service';
 import { Router } from '@angular/router';
 import { Userobj } from '../userobj';
 import { group } from '@angular/animations';
+import { UserdataService } from '../services/userdata.service';
+import { User } from '../models/user';
 
 
 const httpOptions = {
@@ -50,7 +52,8 @@ export class HomepageComponent implements OnInit {
     private matButtonModule: MatButtonModule,
     private flexLayoutModuleformBuilder: FlexLayoutModule,
     private httpClient: HttpClient,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private userdata: UserdataService,
     ) { 
       this.groupString = localStorage.getItem('groups');
       this.groupList = JSON.parse(this.groupString);

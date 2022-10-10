@@ -12,7 +12,7 @@ var io = require('socket.io')(http,{
 const sockets = require('./socket.js');
 
 const MongoClient = require('mongodb').MongoClient;
-var ObjectID = require('mongodb').ObjectID;
+var ObjectID = require('mongodb').ObjectId;
 const PORT = 3000;
 
 // Apply express middle
@@ -26,6 +26,9 @@ app.use(express.urlencoded( {extended: false} ));
 // Setup Socket
 sockets.connect(io, PORT)
 
+// app.post('/login', require('./routes/postLogin'))
+// app.post('/loginafter', require('./routes/postLoginAfter'))
+
 // Use connect method to connect to server
 MongoClient.connect(url, {maxPoolSize: 10, useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {
     // Callback function code. When we have a connection start the rest of the app.
@@ -34,14 +37,13 @@ MongoClient.connect(url, {maxPoolSize: 10, useNewUrlParser: true, useUnifiedTopo
         const db = client.db(dbName);
 
         require('./routes/api-adduser.js')(db,app);
-        require('./routes/api-prodcount.js')(db,app);
+        require('./routes/api-usercount.js')(db,app);
         require('./routes/api-validid.js')(db,app);
         require('./routes/api-getuserlist.js')(db,app);
-        require('./routes/api-getitem.js')(db,app,ObjectID);
-        require('./routes/api-update.js')(db,app,ObjectID);
-        require('./routes/api-deleteitem.js')(db,app,ObjectID);
-        
+        require('./routes/api-getuser.js')(db,app,ObjectID);
+        require('./routes/api-updateuser.js')(db,app,ObjectID);
+        require('./routes/api-deleteuser.js')(db,app,ObjectID);
+
     // Start the server listening on port 3000. Outputs message to console once server has started.
     require('./listen.js')(http);
-
 });

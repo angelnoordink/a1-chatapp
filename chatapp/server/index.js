@@ -7,7 +7,6 @@ const io = require('socket.io')(httpServer, {
 const port = process.env.PORT || 3000;
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
 
   socket.on('message', (message) => {
     console.log(message);
@@ -17,6 +16,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('a user disconnected!');
   });
+  
 });
 
 httpServer.listen(port, () => console.log(`listening on port ${port}`));
