@@ -3,11 +3,60 @@
         <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
             <form >
                 <h2 class="centertext">Users</h2>
-                <button class="btn btn-success btn-block mb-4 c centerbtn" *ngIf="!createGroup">Create Users </button>
+                <button class="btn btn-success btn-block mb-4 c centerbtn" *ngIf="!createUser" (click)="showCreateUserRegion()">Create Users </button>
             </form>
         </div>
     </div>
-    <p class="centertext">Select Role to change</p>
+    <div class="newuserform" *ngIf="createUser">
+        <div class="tab-content" style="padding-top: 10px;">
+            <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+                <form>
+                    <h2>Create User</h2>
+                    <div class="form-outline mb-4" style="margin-top: 20px;">
+                      <div class="row">
+                        <div class="col-9">
+                          <label class="form-label" for="newUsername" style="font-weight: bold;">Username</label>
+                          <input type="text" name="newUsername" id ="newUsername" [(ngModel)]="newUsername" class="form-control" placeholder="Enter name here">
+                        </div>
+                        <div class="col-3" style="padding-top: 30px;">
+                            <input class="form-check-input" type="checkbox" value=""  name="newSuperUserInd" style="width: 30px; height: 30px;" id ="newSuperUserInd" [(ngModel)]="newSuperUserInd" >
+                            <label class="form-label" for="newSuperUserInd" style="font-weight: bold; padding-left:10px; font-size: larger; padding-top:5px;">Super User</label>
+                          </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <label class="form-label" for="newEmail" style="font-weight: bold;">Email</label>
+                          <input type="text" name="newEmail" id ="newEmail" [(ngModel)]="newEmail" class="form-control" placeholder="Enter email here">
+                        </div>
+                      </div>
+                      <div class="row" style="margin-top:10px;">
+                        <div class="col-9">
+                          <label class="form-label" for="inputGroup" style="font-weight: bold;">Assign to Group/s</label>
+                          <!-- Replace with searchable drop down -->
+                          <input type="text" name="inputGroup" id ="inputGroup" class="form-control" [(ngModel)]="inputGroup" placeholder="Enter group name here">
+                        </div>
+                        <div class="col-2">
+                          <button class="btn btn-primary btn-block mb-4" style="width: 120px; margin-top: 30px;" (click)="assignGroup()">Add Group</button>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-top:-5px;">
+                        <div class="col-12">
+                          <label class="form-label" for="newRoomList" style="font-weight: bold;">Groups:</label><br>
+                          <em *ngFor="let group of newGroupList">{{group}}, </em>
+                        </div>
+                      </div>
+                      
+                      <div class="row" style="margin-top: -10px;">
+                        <div class="col-12">
+                          <button class="btn btn-success btn-block mb-4 centerbtn" style="width: 200px" (click)="createNewUser()">Create User</button>
+                        </div>
+                      </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>        
+    <p class="centertext" style="padding-top: 10px;">Select Role to change</p>
     <div>
         <div class ="messagebox row" *ngFor="let user of userList" >
             <div class="col-1">
@@ -18,17 +67,20 @@
             </div>
             <div class="col-3">
                 <select class="form-control" name="sel" 
-                    [(ngModel)]="user.role" (ngModelChange)="updateRole($event.target)" [disabled] ="myrole != 'Super_Admin'">
+                    [(ngModel)]="user.role" (ngModelChange)="updateRole($event.target)">
+                    <!-- [(ngModel)]="user.role" (ngModelChange)="updateRole($event.target)" [disabled] ="myrole != 'Super_Admin'"> -->
                 <option *ngFor="let role of roleList" [ngValue]="role">
                     {{role}}
                 </option>
                 </select>
             </div>
             <div class="col-3">
-                <button class="btn btn-secondary btn-block mb-4" style="width: 120px;" [disabled] ="myrole == 'Super_Admin' || myrole == 'Office_Admin'">Assign </button>
+                <button class="btn btn-secondary btn-block mb-4" style="width: 120px;">Assign </button>
+                <!-- <button class="btn btn-secondary btn-block mb-4" style="width: 120px;" [disabled] ="myrole == 'Super_Admin' || myrole == 'Office_Admin'">Assign </button> -->
             </div>
             <div class="col-3">
-                <button class="btn btn-danger btn-block mb-4" style="width: 120px;" [disabled] ="myrole != 'Super_Admin'" >Delete </button>
+                <button class="btn btn-danger btn-block mb-4" style="width: 120px;" >Delete </button>
+                <!-- <button class="btn btn-danger btn-block mb-4" style="width: 120px;" [disabled] ="myrole != 'Super_Admin'" >Delete </button> -->
             </div>
         </div>
     </div>

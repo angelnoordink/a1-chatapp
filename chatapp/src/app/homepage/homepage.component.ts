@@ -40,8 +40,6 @@ export class HomepageComponent implements OnInit {
   newUserListOutput: any = [];
   newGroupList: any =[];
   dataList: any =[];
-  nrl: string = '';
-  newGroup: any = [];
 
 
   constructor(

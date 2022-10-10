@@ -10,6 +10,7 @@ import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Userobj } from '../userobj';
 import { group } from '@angular/animations';
+import { UserdataService } from '../services/userdata.service';
 
 interface User {
   userid: Number;
@@ -31,16 +32,24 @@ const BACKEND_URL = 'http://localhost:3000';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  groupList: any;
-  groupString: any;
-  createGroup: Boolean = false;
-  groupId: number = 0;
+  // userList: any;
+  userString: any;
+  createUser: Boolean = false;
+  
+  newRoomList: any = [];
+  newUsername: string = '';
+  newSuperUserInd: boolean = false;
+  newEmail: string = '';
+  userId: number = 0;
+  newGroupList: any = [];
+  newGroupListOutput: any = [];
+
   newUser: string = "";
   dataList: any =[];
-  userListString: string = "";
+  inputGroup: string = '';
+  userGroupList: string = "";
   user: any;
   role: string = "";
-  myrole: string = "";
   roleList: any =["Super_Admin","Group_Admin","Group_Assis","Member"];
   userList: any = [
       {
@@ -74,26 +83,55 @@ export class UsersComponent implements OnInit {
   ]
   
 
-  constructor(
-    private browserAnimationsModule: BrowserAnimationsModule,
-    private router: Router,
-    private matCardModule: MatCardModule,
-    private matToolbarModule: MatToolbarModule,
-    private matButtonModule: MatButtonModule,
-    private flexLayoutModuleformBuilder: FlexLayoutModule,
-    private httpClient: HttpClient,
-    private chatService: ChatService
+constructor(
+  private browserAnimationsModule: BrowserAnimationsModule,
+  private router: Router,
+  private matCardModule: MatCardModule,
+  private matToolbarModule: MatToolbarModule,
+  private matButtonModule: MatButtonModule,
+  private flexLayoutModuleformBuilder: FlexLayoutModule,
+  private httpClient: HttpClient,
+  private chatService: ChatService,
+  // private userdata: UserdataService,
   ) { 
-    this.myrole = localStorage.getItem('role')!;
+    this.dataList = localStorage.getItem("data")!;
   }
 
   ngOnInit(): void {
-
+    this.user.role == this.role;
   }
   
   updateRole(target:HTMLSelectElement):void {
     this.user.role == this.role;
   }
 
+  showCreateUserRegion() {
+    this.createUser = true;
+  }
+  
+
+  assignGroup() {
+    
+    // this.newGroupListOutput.push(JSON.stringify({group_name: this.inputGroup}));
+    this.newGroupList.push(this.inputGroup);
+
+
+    let groypobj = {
+      'group_name': this.inputGroup, 
+    }
+
+    
+
+    localStorage.getItem("data");
+
+    this.inputGroup = "";
+  }
+
+
+  createNewUser() {
+    
+    console.log("New user created.");
+    
+  }
 
 }

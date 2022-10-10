@@ -2,9 +2,6 @@ import { Component, createPlatform, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-}
 
 const BACKEND_URL = 'http://localhost:3000';
 
@@ -29,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   submit(){
     let user = {username: this.username, pwd: this.password};
-    this.httpClient.post(BACKEND_URL + '/login', user, httpOptions)
+    this.httpClient.post(BACKEND_URL + '/login', user)
     .subscribe((data:any)=>{
       alert("posting: " +JSON.stringify(user));
       alert("postRes: " +JSON.stringify(data));

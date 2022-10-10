@@ -10,13 +10,13 @@ import { ChatComponent } from './chat/chat.component';
 import { AuthGuard } from './services/authguard.service';
 
 const routes: Routes = [
-  { path: '', component: HomepageComponent, canActivate: [AuthGuard] },
+  { path: '', component: HomepageComponent,  /* canActivate: [AuthGuard]   */},
   { path: 'login', component: LoginComponent},
-  { path: 'homepage', component: HomepageComponent, canActivate: [AuthGuard] },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
-  { path: 'chat/:group_id', component: ChatComponent, canActivate: [AuthGuard] },
-  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] }
+  { path: 'homepage', component: HomepageComponent, /*canActivate: [AuthGuard] */},
+  { path: 'profile', component: ProfileComponent,  /* canActivate: [AuthGuard] */},
+  { path: 'users', component: UsersComponent,  /* canActivate: [AuthGuard] */},
+  { path: 'chat/:group_id', component: ChatComponent,  /* canActivate: [AuthGuard] */},
+  { path: 'account', component: AccountComponent,  /* canActivate: [AuthGuard] */}
 ];
 
 
