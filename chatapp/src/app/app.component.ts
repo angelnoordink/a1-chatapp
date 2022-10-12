@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +17,9 @@ export class AppComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-  ) { 
-    if (localStorage.getItem('userlogin')=="true"){
+    public authService: AuthService
+  ){ 
+    if (localStorage.getItem('user') != null){
       this.loggedIn = true;
     } else {
       this.loggedIn = false;
@@ -26,9 +29,14 @@ export class AppComponent {
     }, 3000);
   }
 
+  ngOnInit() {
+    // this.isLoggedIn();
+  }
+
   logout() {
-    localStorage.clear();
+    this.authService.logout();
+    alert("You have been logged out");
     this.router.navigate(['/login']);
-    window.location.reload()
+    return false;
   }
 }

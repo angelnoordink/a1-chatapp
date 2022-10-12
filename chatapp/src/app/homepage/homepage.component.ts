@@ -5,12 +5,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ChatService } from '../services/chat.service';
 import { Router } from '@angular/router';
-import { Userobj } from '../userobj';
-import { group } from '@angular/animations';
 import { UserdataService } from '../services/userdata.service';
 import { User } from '../models/user';
+import { AuthService } from '../services/auth.service';
 
 
 const httpOptions = {
@@ -26,21 +24,18 @@ const BACKEND_URL = 'http://localhost:3000';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-  groupList: any;
-  groupString: any;
+  username: String = '';
+  email: String = '';
+  super_admin_ind: Boolean = false;
+  groupList: any = [];
+  userGroups: any = [];
+  
   createGroup: Boolean = false;
 
   newGroupName: string = '';
   newRoom: string = '';
   newRoomList: any = [];
-  inputUsername: string = '';
-  inputEmail: string = '';
   groupId: number = 0;
-  newUserList: any = [];
-  newUserListOutput: any = [];
-  newGroupList: any =[];
-  dataList: any =[];
-
 
   constructor(
     private browserAnimationsModule: BrowserAnimationsModule,
@@ -50,13 +45,32 @@ export class HomepageComponent implements OnInit {
     private matButtonModule: MatButtonModule,
     private flexLayoutModuleformBuilder: FlexLayoutModule,
     private httpClient: HttpClient,
-    private chatService: ChatService,
-    private userdata: UserdataService,
+    private userdataService: UserdataService,
+    private authService: AuthService
     ) { 
-      this.groupString = localStorage.getItem('groups');
-      this.groupList = JSON.parse(this.groupString);
+      this.authService.getProfile().subscribe(profile => {
+        console.log(profile.user);
+        this.username = profile.user.username;
+        this.email = profile.user.email;
+        this.super_admin_ind = profile.user.super_admin_ind;
+        this.userGroups = profile.user.groupList;
+        console.log(JSON.stringify(this.userGroups));
+        // for each user group in list find group from _id
+      },
+      err => {
+        console.log(err);
+        return false;
+      });
 
-      this.dataList = localStorage.getItem("data")!;
+      this.userdataService.getgrouplist().subscribe(groups => {
+        console.log(JSON.stringify(groups));
+        this.groupList = groups;
+      },
+      err => {
+        console.log(err);
+        return false;
+      });
+
     }
 
   ngOnInit(): void {
@@ -70,32 +84,32 @@ export class HomepageComponent implements OnInit {
     this.createGroup = true;
   }
 
-  assignUser() {
+  // assignUser() {
     
-    this.newUserListOutput.push(JSON.stringify({username: this.inputUsername, email: this.inputEmail}));
-    this.newUserList.push({username: this.inputUsername, email: this.inputEmail});
+  //   this.newUserListOutput.push(JSON.stringify({username: this.inputUsername, email: this.inputEmail}));
+  //   this.newUserList.push({username: this.inputUsername, email: this.inputEmail});
 
 
-    let userobj = {
-      'username': this.inputUsername, 
-      'email': this.inputEmail
-    }
+  //   let userobj = {
+  //     'username': this.inputUsername, 
+  //     'email': this.inputEmail
+  //   }
 
     
 
-    localStorage.getItem("data");
+  //   localStorage.getItem("data");
 
-    this.inputUsername = "";
-    this.inputEmail = "";
-  }
+  //   this.inputUsername = "";
+  //   this.inputEmail = "";
+  // }
 
 
   
   assignRooms() {
 
-    for (let i = 0; i < this.newUserList.length; i++) {
-      // {username: this.inputUsername, email: this.inputEmail}
-    }
+    // for (let i = 0; i < this.newUserList.length; i++) {
+    //   // {username: this.inputUsername, email: this.inputEmail}
+    // }
     
     this.newRoomList.push(this.newRoom);
     console.log(this.newRoomList);

@@ -28,29 +28,6 @@
                         <em *ngFor="let room of newRoomList">{{room}}, </em>
                       </div>
                     </div>
-                    <hr style="border-top: 3px solid #bbb;">
-                    <div class="row" style="margin-top: 10px;">
-                      <h4>Assign Users to Group</h4>
-                    </div>
-                    <div class="row" style="margin-top: 10px;">
-                      <div class="col-4">
-                        <label class="form-label" for="inputUsername" style="font-weight: bold;">Username</label>
-                        <input type="text" name="inputUsername" id ="inputUsername" [(ngModel)]="inputUsername" class="form-control" placeholder="Enter username here">
-                      </div>
-                      <div class="col-5">
-                        <label class="form-label" for="inputEmail" style="font-weight: bold; ">Email Address</label>
-                        <input type="text" name="inputEmail" id ="inputEmail" [(ngModel)]="inputEmail" class="form-control" placeholder="Enter email address here">
-                      </div>
-                      <div class="col-2">
-                        <button class="btn btn-primary btn-block mb-4" style="width: 120px; margin-top: 30px;" (click)="assignUser()">Add User</button>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-12">
-                        <label class="form-label" for="newUserList" style="font-weight: bold;">Users:</label><br>
-                        <em *ngFor="let user of newUserList">{{user}}, </em>
-                      </div>
-                    </div>
                     <div class="row" style="margin-top: -10px;">
                       <div class="col-12">
                         <button class="btn btn-success btn-block mb-4 centerbtn" style="width: 200px" (click)="createNewGroup()">Create Group</button>
@@ -63,15 +40,15 @@
   </div>        
     <div fxLayout="row wrap" fxLayoutGap="16px">
       <div fxFlex="23%" fxFlex.xs="50%" fxFlex.sm="33%" *ngFor="let group of groupList">
-        <mat-card class="mat-elevation-z4" style="margin-top: 20px;" (click)="onSelect(group.group_id)">
+        <mat-card class="mat-elevation-z4" style="margin-top: 20px;" (click)="onSelect(group._id)">
           <mat-card-header>
             <mat-card-title>{{group.group_name}}</mat-card-title>
           </mat-card-header>
           <img mat-card-image src="./../assets/images/groupimage.jpeg">
           <mat-card-content>
-            <ul *ngFor="let room of group.rooms">
+            <!-- <ul *ngFor="let room of group.rooms">
               <li>{{room}}</li>
-            </ul>
+            </ul> -->
           </mat-card-content>
         </mat-card>
       </div>

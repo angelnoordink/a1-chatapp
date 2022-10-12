@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-account',
@@ -7,17 +8,29 @@ import { Router } from '@angular/router';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-  // userlogin = localStorage.getItem('userlogin');
-  username = localStorage.getItem('username');
-  email = localStorage.getItem('email');
-  role = localStorage.getItem('role');
-
+  username: String = '';
+  email: String = '';
+  super_admin_ind: Boolean = false;
+  groupList = [];
 
   constructor(
     private router: Router,
+    private authService: AuthService,
+    
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.authService.getProfile().subscribe(profile => {
+      console.log(profile.user);
+      this.username = profile.user.username;
+      this.email = profile.user.email;
+      this.super_admin_ind = profile.user.super_admin_ind;
+      this.groupList = profile.user.groupList;
+    },
+    err => {
+      console.log(err);
+      return false;
+    });
   }
 
 }

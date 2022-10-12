@@ -1,40 +1,39 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { User } from '../models/user';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserdataService {
-
   constructor(private http: HttpClient) { }
 
-  adduser(user:User){
-    return this.http.post<any>('http://localhost:3000/api/adduser', user);
+  getuserlist(): Observable<any>{
+    return this.http.get('http://localhost:3000/users/users')
   }
 
-  getuserlist(){
-    return this.http.get<any>('http://localhost:3000/api/getuserlist');
+  getgrouplist(): Observable<any>{
+    return this.http.get('http://localhost:3000/users/groups')
   }
 
-  getuser(userID: any){
-    return this.http.post<any>('http://localhost:3000/api/getuser', {'userid':userID});
-  }
+  // getProfile(): Observable<any>{
+  //   this.loadToken();
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'Authorization': this.authToken
+  //   });
+  //   return this.http.get('http://localhost:3000/users/profile', {headers: headers})
+  // }
+  // updateuser(user:User){
+  //   return this.http.post<any>('http://localhost:3000/api/updateuser', user);
+  // }
 
-  updateuser(user:User){
-    return this.http.post<any>('http://localhost:3000/api/updateuser', user);
-  }
+  // deleteuser(userID: number){
+  //   return this.http.post<any>('http://localhost:3000/api/deleteuser', {'userid':userID});
+  // }
 
-  deleteuser(userID: number){
-    return this.http.post<any>('http://localhost:3000/api/deleteuser', {'userid':userID});
-  }
-
-  checkvalidid(userID: number){
-    return this.http.post<any>('http://localhost:3000/api/checkvalidid', {'id':userID});
-  }
-
-  getusercount(){
-    return this.http.get<any>('http://localhost:3000/api/usercount');
-  }
+  // getusercount(){
+  //   return this.http.get<any>('http://localhost:3000/api/usercount');
+  // }
 
 }

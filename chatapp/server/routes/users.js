@@ -4,6 +4,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
+const Group = require('../models/group');
 
 // Register
 router.post('/register', (req, res, next) => {
@@ -63,5 +64,35 @@ router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res,
     res.json({user: req.user});
 });
 
+// Get all users
+router.get('/users', (req, res, next) => {
+    User.find({}, function(err, users) {
+        res.send(users);
+    });
+});
+
+// Add group to user
+// router.post('/addgrouptouser', (req, res, next) => {
+//     const user_id = req.body.user_id;
+//     const group_id = req.body.group_id;
+    
+//     User.updateOne({_id: user_id}, {
+//         $push: {
+//             groupList: {group: group_id, role:"Member"}
+//         }
+//     })
+//     Group.updateOne({_id: group_id}, {
+//         $push: {
+//             userList: {user_id}
+//         }
+//     })
+// });
+
+router.get('/groups', (req, res, next) => {
+    Group.find({}, function(err, groups) {
+        // res.json(groups);
+        res.send(groups);
+    });
+});
 
 module.exports = router;

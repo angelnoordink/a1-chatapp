@@ -2,23 +2,16 @@
     <h2>Login</h2>
     <div class="tab-content" style="padding-top: 30px;">
         <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-            <form>
-
-            <!-- Username input -->
-            <div class="form-outline mb-4">
-                <label class="form-label" for="username" style="font-weight: bold;">Username</label>
-                <input type="username" name="username" class="form-control" [(ngModel)]="username"/>
-            </div>
-
-            <!-- Password input -->
-            <div class="form-outline mb-4">
-                <label class="form-label" for="password" style="font-weight: bold;">Password</label>
-                <input type="password" name="password" class="form-control" [(ngModel)]="password"/>
-            </div>
-
-            <!-- Submit button -->
-            <button (click)="submit()" class="btn btn-primary btn-block mb-4" style="width: 120px;">Sign in</button>
-
+            <form (submit)="onLoginSubmit()">
+                <div class="form-outline mb-4">
+                    <label class="form-label" style="font-weight: bold;">Username</label>
+                    <input type="text" name="username" class="form-control" [(ngModel)]="username"/>
+                </div>
+                <div class="form-outline mb-4">
+                    <label class="form-label" style="font-weight: bold;">Password</label>
+                    <input type="password" name="password" class="form-control" [(ngModel)]="password"/>
+                </div>
+                <button class="btn btn-primary btn-block mb-4" style="width: 120px;" type="submit">Sign in</button>
             </form>
         </div>
     </div>

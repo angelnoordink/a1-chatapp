@@ -16,8 +16,9 @@
                     <td>{{email}}</td>
                 </tr>
                 <tr>
-                    <th>Role</th>
-                    <td>{{role}}</td>
+                    <th>Super User</th>
+                    <td *ngIf="super_admin_ind">True</td>
+                    <td *ngIf="!super_admin_ind">False</td>
                 </tr>
                 <tr>
                     <td></td>

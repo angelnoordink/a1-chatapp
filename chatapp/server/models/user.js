@@ -22,7 +22,7 @@ const UserSchema = mongoose.Schema({
     },
     groupList: [
         { 
-            group_id: {type: mongoose.Types.ObjectId, ref: 'Group'}, 
+            group: {type: mongoose.Types.ObjectId, ref: 'Group'}, 
             group_role: {role: String} 
         },
     ],

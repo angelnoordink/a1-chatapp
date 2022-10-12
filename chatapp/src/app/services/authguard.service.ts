@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
 import { CanActivate }    from '@angular/router';
 import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+  constructor(private router: Router, public authService: AuthService) { }
   
-  canActivate() {
-    //Your redirect logic/condition. I use this.
-
-    if (!(localStorage.getItem('userlogin')=="true")){
-      // alert("Please Login");
+  canActivate():any {
+    if (this.authService.loggedIn()){
+      return true;
+    } else {
       this.router.navigate(['/login']);
+      return false;
     }
-    console.log('AuthGuard#canActivate called');
-    return true;
-
   }
-
-  constructor(private router: Router) { }
 }
