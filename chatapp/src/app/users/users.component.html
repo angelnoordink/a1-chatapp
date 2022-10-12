@@ -10,76 +10,53 @@
     <div class="newuserform" *ngIf="createUser">
         <div class="tab-content" style="padding-top: 10px;">
             <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-                <form>
+                <form (submit)="onRegisterSubmit()">
                     <h2>Create User</h2>
                     <div class="form-outline mb-4" style="margin-top: 20px;">
                       <div class="row">
                         <div class="col-9">
-                          <label class="form-label" for="newUsername" style="font-weight: bold;">Username</label>
-                          <input type="text" name="newUsername" id ="newUsername" [(ngModel)]="newUsername" class="form-control" placeholder="Enter name here">
+                          <label class="form-label" style="font-weight: bold;">Username</label>
+                          <input type="text" name="newUsername"[(ngModel)]="newUsername" class="form-control" placeholder="Enter name here">
                         </div>
                         <div class="col-3" style="padding-top: 30px;">
-                            <input class="form-check-input" type="checkbox" value=""  name="newSuperUserInd" style="width: 30px; height: 30px;" id ="newSuperUserInd" [(ngModel)]="newSuperUserInd" >
-                            <label class="form-label" for="newSuperUserInd" style="font-weight: bold; padding-left:10px; font-size: larger; padding-top:5px;">Super User</label>
+                            <input class="form-check-input" type="checkbox"  name="newSuperUserInd" style="width: 30px; height: 30px;" id ="newSuperUserInd" [(ngModel)]="newSuperUserInd" >
+                            <label class="form-label" style="font-weight: bold; padding-left:10px; font-size: larger; padding-top:5px;">Super User</label>
                           </div>
                       </div>
-                      <div class="row">
+                      <div class="row" style="margin-top: 10px;">
                         <div class="col-12">
-                          <label class="form-label" for="newEmail" style="font-weight: bold;">Email</label>
-                          <input type="text" name="newEmail" id ="newEmail" [(ngModel)]="newEmail" class="form-control" placeholder="Enter email here">
+                          <label class="form-label" style="font-weight: bold;">Email</label>
+                          <input type="text" name="newEmail" [(ngModel)]="newEmail" class="form-control" placeholder="Enter email here">
                         </div>
                       </div>
-                      <div class="row" style="margin-top:10px;">
-                        <div class="col-9">
-                          <label class="form-label" for="inputGroup" style="font-weight: bold;">Assign to Group/s</label>
-                          <!-- Replace with searchable drop down -->
-                          <input type="text" name="inputGroup" id ="inputGroup" class="form-control" [(ngModel)]="inputGroup" placeholder="Enter group name here">
-                        </div>
-                        <div class="col-2">
-                          <button class="btn btn-primary btn-block mb-4" style="width: 120px; margin-top: 30px;" (click)="assignGroup()">Add Group</button>
+                      <div class="row" style="margin-top: 10px;">
+                        <div class="col-12">
+                          <label class="form-label"  style="font-weight: bold;">Password</label>
+                          <input type="password" name="newPassword" [(ngModel)]="newPassword" class="form-control" placeholder="Enter password here">
                         </div>
                       </div>
-                      <div class="row" style="margin-top:-5px;">
+                      <div class="row" style="margin-top: 10px;">
                         <div class="col-12">
-                          <label class="form-label" for="newRoomList" style="font-weight: bold;">Groups:</label><br>
-                          <em *ngFor="let group of newGroupList">{{group}}, </em>
-                        </div>
-                      </div>
-                      
-                      <div class="row" style="margin-top: -10px;">
-                        <div class="col-12">
-                          <button class="btn btn-success btn-block mb-4 centerbtn" style="width: 200px" (click)="createNewUser()">Create User</button>
+                          <button class="btn btn-success btn-block mb-4 centerbtn" style="width: 200px" value="Submit">Create User</button>
                         </div>
                       </div>
                     </div>
                 </form>
             </div>
         </div>
-    </div>        
-    <p class="centertext" style="padding-top: 10px;">Select Role to change</p>
+    </div>
     <div>
         <div class ="messagebox row" *ngFor="let user of userList" >
             <div class="col-1">
                 <img src="../../assets/images/user.png" style="width: 40px; height: 60px; padding-bottom: 20px;">
             </div>
             <div class="col-2">
-                <p style="font-size: 20px; padding-top:5px"><b>{{user.username}}</b></p>
+                <p style="font-size: 20px; padding-top:5px; padding-left: 30px;"><b>{{user.username}}</b></p>
+            </div>
+            <div class="col-6">
             </div>
             <div class="col-3">
-                <select class="form-control" name="sel" 
-                    [(ngModel)]="user.role" (ngModelChange)="updateRole($event.target)">
-                    <!-- [(ngModel)]="user.role" (ngModelChange)="updateRole($event.target)" [disabled] ="myrole != 'Super_Admin'"> -->
-                <option *ngFor="let role of roleList" [ngValue]="role">
-                    {{role}}
-                </option>
-                </select>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-secondary btn-block mb-4" style="width: 120px;">Assign </button>
-                <!-- <button class="btn btn-secondary btn-block mb-4" style="width: 120px;" [disabled] ="myrole == 'Super_Admin' || myrole == 'Office_Admin'">Assign </button> -->
-            </div>
-            <div class="col-3">
-                <button class="btn btn-danger btn-block mb-4" style="width: 120px;" >Delete </button>
+                <button class="btn btn-danger btn-block mb-4" style="width: 120px;">Delete</button>
                 <!-- <button class="btn btn-danger btn-block mb-4" style="width: 120px;" [disabled] ="myrole != 'Super_Admin'" >Delete </button> -->
             </div>
         </div>

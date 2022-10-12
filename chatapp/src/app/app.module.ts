@@ -17,6 +17,7 @@ import { AccountComponent } from './account/account.component';
 import { ChatComponent } from './chat/chat.component';
 import { ChatService } from './services/chat.service';
 import { AuthGuard } from './services/authguard.service';
+import { ValidateService } from './services/validate.service';
 import { HomepageComponent } from './homepage/homepage.component';
 import { UsersComponent } from './users/users.component';
 
@@ -43,7 +44,7 @@ import { UsersComponent } from './users/users.component';
     MatButtonModule,
     FlexLayoutModule
   ],
-  providers: [ChatService, AuthGuard],
+  providers: [ChatService, AuthGuard, ValidateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

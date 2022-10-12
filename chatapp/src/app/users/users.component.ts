@@ -4,27 +4,8 @@ import { MatCardModule} from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ChatService } from '../services/chat.service';
-import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Userobj } from '../userobj';
-import { group } from '@angular/animations';
-import { UserdataService } from '../services/userdata.service';
-
-interface User {
-  userid: Number;
-  name: String;
-  email: String;
-  role: String;
-}
-
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-}
-
-const BACKEND_URL = 'http://localhost:3000';
+import { ValidateService } from '../services/validate.service';
 
 @Component({
   selector: 'app-users',
@@ -32,25 +13,14 @@ const BACKEND_URL = 'http://localhost:3000';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  // userList: any;
-  userString: any;
   createUser: Boolean = false;
   
-  newRoomList: any = [];
   newUsername: string = '';
   newSuperUserInd: boolean = false;
   newEmail: string = '';
-  userId: number = 0;
-  newGroupList: any = [];
-  newGroupListOutput: any = [];
+  newPassword: string = '';
 
-  newUser: string = "";
   dataList: any =[];
-  inputGroup: string = '';
-  userGroupList: string = "";
-  user: any;
-  role: string = "";
-  roleList: any =["Super_Admin","Group_Admin","Group_Assis","Member"];
   userList: any = [
       {
           "userid":1,"username":"kaile.su","email":"k.su@griffith.edu.au","role":"Super_Admin","groups":[
@@ -83,55 +53,42 @@ export class UsersComponent implements OnInit {
   ]
   
 
-constructor(
-  private browserAnimationsModule: BrowserAnimationsModule,
-  private router: Router,
-  private matCardModule: MatCardModule,
-  private matToolbarModule: MatToolbarModule,
-  private matButtonModule: MatButtonModule,
-  private flexLayoutModuleformBuilder: FlexLayoutModule,
-  private httpClient: HttpClient,
-  private chatService: ChatService,
-  // private userdata: UserdataService,
+  constructor (
+    private validateService: ValidateService,
   ) { 
-    this.dataList = localStorage.getItem("data")!;
   }
 
   ngOnInit(): void {
-    this.user.role == this.role;
   }
   
   updateRole(target:HTMLSelectElement):void {
-    this.user.role == this.role;
   }
 
   showCreateUserRegion() {
     this.createUser = true;
   }
-  
 
-  assignGroup() {
-    
-    // this.newGroupListOutput.push(JSON.stringify({group_name: this.inputGroup}));
-    this.newGroupList.push(this.inputGroup);
-
-
-    let groypobj = {
-      'group_name': this.inputGroup, 
+  onRegisterSubmit() {
+    const newUser = {
+      username: this.newUsername,
+      email: this.newEmail,
+      super_admin_ind: this.newSuperUserInd,
+      password: this.newPassword
     }
 
+    // Required Fields
+    if(!this.validateService.validateRegister(newUser)){
+      alert('Please fill in all fields' + " username:" + newUser.username + " email:" + newUser.email + " password:" + newUser.password);
+      return false;
+    } 
     
+    if(!this.validateService.validateEmail(newUser.email)){
+      alert('Please use a valid email');
+      return false;
+    } else {
+      return true;
+    }
 
-    localStorage.getItem("data");
-
-    this.inputGroup = "";
-  }
-
-
-  createNewUser() {
-    
-    console.log("New user created.");
-    
   }
 
 }
