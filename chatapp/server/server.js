@@ -27,9 +27,16 @@ mongoose.connection.on('error', (err) => {
     console.log('Database error: ' + err);
 });
 
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+// });
+
 const app = express();
 
 const users = require('./routes/users');
+const groups = require('./routes/groups');
 
 // Port Number
 const port = 3000;
@@ -50,6 +57,7 @@ app.use(passport.session());
 require('./config/passport')(passport);
 
 app.use('/users', users);
+app.use('/groups', groups);
 
 // Index Route
 app.get('/', (req, res) => {

@@ -4,11 +4,11 @@ import { FormBuilder } from '@angular/forms';
 import { ChatService } from '../services/chat.service';
 import { io } from "socket.io-client";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UserdataService } from '../services/userdata.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 }
-
 
 @Component({
   selector: 'app-chat',
@@ -42,21 +42,29 @@ export class ChatComponent implements OnInit {
     private router: Router,
     private chatService: ChatService,
     private route: ActivatedRoute,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    public userdataService: UserdataService
   ) { 
-    this.username = localStorage.getItem('username')!;
+    this.groupID = this.route.snapshot.paramMap.get('group_id');
+
+    // For the super users
+    this.userdataService.getgroup(this.groupID).subscribe(group => {
+      // this.groupString = JSON.stringify(groups[0]);
+      console.log(group[0]);
+      this.group = group[0]
+      this.groupName = this.group.group_name;
+      console.log(this.groupName);
+      this.rooms = this.group.roomList;
+    },
+    err => {
+      console.log(err);
+      return false;
+    });
+
   }
 
   
   ngOnInit(): void {
-    this.groupID = this.route.snapshot.paramMap.get('group_id');
-
-    this.groupString = localStorage.getItem('groups');
-    this.groupList = JSON.parse(this.groupString);
-
-    this.group = this.groupList[this.groupID - 1];
-    this.groupName = this.group.group_name;
-    this.rooms = this.group.rooms;
     
     this.role = localStorage.getItem('role')!;
     
@@ -65,7 +73,7 @@ export class ChatComponent implements OnInit {
     });
     this.chatService.reqRoomList(this.rooms);
     this.chatService.getRoomList((msg:any)=>{this.rooms = JSON.parse(msg)});
-    console.log(this.rooms)
+    // console.log(this.rooms)
     this.chatService.notice((msg:any)=>{this.roomNotice = msg});
     this.chatService.joined((msg:any)=>{this.currentRoom = msg
       if (this.currentRoom != "") {

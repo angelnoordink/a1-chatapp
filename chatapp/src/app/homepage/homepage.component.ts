@@ -50,11 +50,10 @@ export class HomepageComponent implements OnInit {
     private authService: AuthService
     ) { 
       this.authService.getProfile().subscribe(profile => {
-        console.log(profile.user);
-        this.username = profile.user.username;
-        this.email = profile.user.email;
-        this.role = profile.user.role;
-        this.userGroups = profile.user.groupList;
+        this.username = profile.username;
+        this.email = profile.email;
+        this.role = profile.role;
+        this.userGroups = profile.groupList;
         console.log("Usergroups"+JSON.stringify(this.userGroups));
       },
       err => {
@@ -62,6 +61,7 @@ export class HomepageComponent implements OnInit {
         return false;
       });
 
+      // For the super users
       this.userdataService.getgrouplist().subscribe(groups => {
         console.log("Allgroups"+JSON.stringify(groups));
         this.groupList = groups;

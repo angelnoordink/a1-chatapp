@@ -13,8 +13,18 @@ export class UserdataService {
   }
 
   getgrouplist(): Observable<any>{
-    return this.http.get('http://localhost:3000/users/groups')
+    return this.http.get('http://localhost:3000/groups/groups')
   }
+
+  getgroup(groupId): Observable<any>{
+    return this.http.get(`http://localhost:3000/groups/group/${groupId}`)
+  }
+
+  // getGroup(group): Observable<any>{
+  //   let headers = new HttpHeaders();
+  //   headers.append('Content-Type', 'application/json');
+  //   return this.http.post('http://localhost:3000/groups/group', group, {headers: headers})
+  // }
 
   // getProfile(): Observable<any>{
   //   this.loadToken();
@@ -24,6 +34,7 @@ export class UserdataService {
   //   });
   //   return this.http.get('http://localhost:3000/users/profile', {headers: headers})
   // }
+
   // updateuser(user:User){
   //   return this.http.post<any>('http://localhost:3000/api/updateuser', user);
   // }

@@ -61,26 +61,42 @@ router.post('/authenticate', (req, res, next) => {
 
 // Profile
 router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-    res.json({user: req.user});
+    const user = User.aggregate([
+        {
+            $lookup:
+            {
+                from: "groups",
+                localField: "groupList.group_id",
+                foreignField: "_id",
+                as: "groupList"
+            }
+        }
+    ]).then(function (users) { res.json(users[0]); console.log('user', users[0]); });
+    
 });
 
 // Get all users
 router.get('/users', (req, res, next) => {
-    
     User.find({}, function(err, users) {
         res.send(users);
     });
 });
 
-router.get('/group', (req, res, next) => {
-    const group_name = req.body.group_name;
-    
-    User.find({}, function(err, users) {
-        res.send(users);
-    });
+router.get('/user/:userId', (req, res, next) => {
+    var ObjectId = require('mongodb').ObjectId; 
+
+    User.find({"_id": ObjectId(req.params.userIf)})
+    .then((user) => res.send(user))
+    .catch((error) => console.log(error));
 });
 
+router.patch('/user/:userId', (req, res, next) => {
+    var ObjectId = require('mongodb').ObjectId; 
 
+    User.findOneAndUpdate({"_id": ObjectId(req.params.userIf)}, {$set: req.body })
+    .then((user)=> res.send(user))
+    .catch((error) => console.log(error));
+});
 
 // Add group to user
 // router.post('/addgrouptouser', (req, res, next) => {
@@ -98,13 +114,6 @@ router.get('/group', (req, res, next) => {
 //         }
 //     })
 // });
-
-// all groups
-router.get('/groups', (req, res, next) => {
-    Group.find({}, function(err, groups) {
-        res.send(groups);
-    });
-});
 
 
 module.exports = router;
