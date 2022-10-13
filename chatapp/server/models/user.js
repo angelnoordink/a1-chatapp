@@ -16,15 +16,12 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    super_admin_ind: {
-        type: Boolean,
-        default: false
+    role: {
+        type: String,
+        default: 'member'
     },
     groupList: [
-        { 
-            group: {type: mongoose.Types.ObjectId, ref: 'Group'}, 
-            group_role: {role: String} 
-        },
+        { group_id: {type: mongoose.Types.ObjectId, ref: 'Group'} }
     ],
 
 });

@@ -9,10 +9,14 @@ const GroupSchema = mongoose.Schema({
         required: true
     },
     userList: [
-        { type: mongoose.Types.ObjectId, ref: 'User' },
+        {
+            user_id: { type: mongoose.Types.ObjectId, ref: 'User' }
+        }
     ],
     roomList: [
-        { type: mongoose.Types.ObjectId, ref: 'Room' },
+        {
+           room_id: { type: mongoose.Types.ObjectId, ref: 'Room' }
+        }
     ],
 
 });

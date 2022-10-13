@@ -10,21 +10,26 @@ import { AuthService } from '../services/auth.service';
 export class AccountComponent implements OnInit {
   username: String = '';
   email: String = '';
-  super_admin_ind: Boolean = false;
+  role: String = '';
+  myrole: string = "";
   groupList = [];
+
+  roleList: any =["Super_Admin","Group_Admin","Group_Assis","Member"];
 
   constructor(
     private router: Router,
     private authService: AuthService,
     
-  ) { }
+  ) { 
+    this.myrole = localStorage.getItem('role')!;
+  }
 
   ngOnInit() {
     this.authService.getProfile().subscribe(profile => {
       console.log(profile.user);
       this.username = profile.user.username;
       this.email = profile.user.email;
-      this.super_admin_ind = profile.user.super_admin_ind;
+      this.role = profile.user.role;
       this.groupList = profile.user.groupList;
     },
     err => {

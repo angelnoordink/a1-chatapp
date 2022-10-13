@@ -2,12 +2,12 @@ export class User {
     public id: number;
     public username: string;
     public email: string;
-    public super_user_ind: boolean;
+    public role: string;
 
-    constructor(id: number,username: string, email: string, super_user_ind: boolean){
+    constructor(id: number,username: string, email: string, role: string){
         this.id = id;
         this.username = username;
         this.email = email;
-        this.super_user_ind = super_user_ind;
+        this.role = role;
     }
 }

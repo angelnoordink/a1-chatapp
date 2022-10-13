@@ -18,12 +18,15 @@ export class UsersComponent implements OnInit {
   createUser: Boolean = false;
   
   newUsername: string = '';
-  newSuperUserInd: boolean = false;
+  newRole: string = '';
   newEmail: string = '';
   newPassword: string = '';
+  myrole: string = "";
 
   dataList: any =[];
   userList: any = [];
+
+  roleList: any =["super_admin","group_admin","group_assis","member"];
   
 
   constructor (
@@ -32,6 +35,7 @@ export class UsersComponent implements OnInit {
     private userdataService: UserdataService,
     private router: Router
   ) { 
+    this.myrole = localStorage.getItem('role')!;
   }
 
   ngOnInit(): void {
@@ -46,6 +50,7 @@ export class UsersComponent implements OnInit {
   }
   
   updateRole(target:HTMLSelectElement):void {
+    // this.user.role == this.role;
   }
 
   showCreateUserRegion() {
@@ -56,7 +61,7 @@ export class UsersComponent implements OnInit {
     const newUser = {
       username: this.newUsername,
       email: this.newEmail,
-      super_admin_ind: this.newSuperUserInd,
+      role: this.newRole,
       password: this.newPassword
     }
 

@@ -7,10 +7,6 @@ const RoomSchema = mongoose.Schema({
     room_name: {
         type: String,
         required: true
-    },
-    owner: {
-        type: mongoose.Types.ObjectId,
-        ref: "Group"
     }
 });
 

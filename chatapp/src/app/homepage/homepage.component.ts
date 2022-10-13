@@ -26,8 +26,9 @@ const BACKEND_URL = 'http://localhost:3000';
 export class HomepageComponent implements OnInit {
   username: String = '';
   email: String = '';
-  super_admin_ind: Boolean = false;
+  role: String = '';
   groupList: any = [];
+  userGroupList: any = [];
   userGroups: any = [];
   
   createGroup: Boolean = false;
@@ -52,10 +53,9 @@ export class HomepageComponent implements OnInit {
         console.log(profile.user);
         this.username = profile.user.username;
         this.email = profile.user.email;
-        this.super_admin_ind = profile.user.super_admin_ind;
+        this.role = profile.user.role;
         this.userGroups = profile.user.groupList;
-        console.log(JSON.stringify(this.userGroups));
-        // for each user group in list find group from _id
+        console.log("Usergroups"+JSON.stringify(this.userGroups));
       },
       err => {
         console.log(err);
@@ -63,13 +63,14 @@ export class HomepageComponent implements OnInit {
       });
 
       this.userdataService.getgrouplist().subscribe(groups => {
-        console.log(JSON.stringify(groups));
+        console.log("Allgroups"+JSON.stringify(groups));
         this.groupList = groups;
       },
       err => {
         console.log(err);
         return false;
       });
+      
 
     }
 

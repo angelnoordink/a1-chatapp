@@ -48,7 +48,7 @@ router.post('/authenticate', (req, res, next) => {
                         id: user._id,
                         username: user.username,
                         email: user.email,
-                        super_admin_ind: user.super_admin_ind,
+                        role: user.role,
                         groupList: user.groupList
                     }
                 });
@@ -66,10 +66,21 @@ router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res,
 
 // Get all users
 router.get('/users', (req, res, next) => {
+    
     User.find({}, function(err, users) {
         res.send(users);
     });
 });
+
+router.get('/group', (req, res, next) => {
+    const group_name = req.body.group_name;
+    
+    User.find({}, function(err, users) {
+        res.send(users);
+    });
+});
+
+
 
 // Add group to user
 // router.post('/addgrouptouser', (req, res, next) => {
@@ -78,7 +89,7 @@ router.get('/users', (req, res, next) => {
     
 //     User.updateOne({_id: user_id}, {
 //         $push: {
-//             groupList: {group: group_id, role:"Member"}
+//             groupList: {group: group_id}
 //         }
 //     })
 //     Group.updateOne({_id: group_id}, {
@@ -88,11 +99,12 @@ router.get('/users', (req, res, next) => {
 //     })
 // });
 
+// all groups
 router.get('/groups', (req, res, next) => {
     Group.find({}, function(err, groups) {
-        // res.json(groups);
         res.send(groups);
     });
 });
+
 
 module.exports = router;
