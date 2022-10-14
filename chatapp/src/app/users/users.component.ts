@@ -39,6 +39,10 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const currUser =  JSON.parse(localStorage.getItem('user')!);
+    this.myrole = currUser.role;
+      
+
     this.userdataService.getuserlist().subscribe(users => {
       console.log(JSON.stringify(users));
       this.userList = users;
@@ -49,8 +53,26 @@ export class UsersComponent implements OnInit {
     });
   }
   
-  updateRole(target:HTMLSelectElement):void {
-    // this.user.role == this.role;
+  updateRole(user):void {
+    let userobj = {
+      'role': user.role
+    }
+
+    this.authService.updateUser(userobj, user._id).subscribe(data => {
+      if(data.success){
+        alert('This user has been update');
+      } else {
+        alert('Something went wrong');
+      }
+    },
+    err => {
+      console.log(err);
+      return false;
+    });
+  }
+
+  deleteUser(user_id):void {
+    alert(user_id);
   }
 
   showCreateUserRegion() {
@@ -84,6 +106,8 @@ export class UsersComponent implements OnInit {
         alert('Something went wrong');
       }
     });
+
+    window.location.reload()
   }
 
 }

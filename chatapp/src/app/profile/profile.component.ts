@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
+import { UserdataService } from '../services/userdata.service';
 
 import { Userobj } from '../userobj';
 
@@ -22,31 +24,43 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private authService: AuthService,
+    private userdataService: UserdataService,
   ) { 
-
-    this.username = localStorage.getItem('username')!;
-    this.email = localStorage.getItem('email')!;
-    this.userid = Number(localStorage.getItem('userid'));
   }
 
   ngOnInit(): void {
+
+    this.authService.getProfile().subscribe(profile => {
+      console.log(profile.user);
+      this.username = profile.username;
+      this.email = profile.email;
+      this.userid = profile._id;
+    },
+    err => {
+      console.log(err);
+      return false;
+    });
   }
 
   editFunc(){
     let userobj = {
-      'userid': this.userid,
       'username': this.username, 
       'email': this.email
     }
 
-    
-    localStorage.setItem('username', this.username);
-    localStorage.setItem('email', this.email);
-    localStorage.setItem('userid', this.userid.toString());
-
-    this.httpClient.post<Userobj[]>(BACKEND_URL + '/loginafter', userobj,  httpOptions)
-      .subscribe((m: any) => {alert(JSON.stringify(m));});
+    this.authService.updateUser(userobj, this.userid).subscribe(data => {
+      if(data.success){
+        alert('This user has been update');
+      } else {
+        alert('Something went wrong');
+      }
+    },
+    err => {
+      console.log(err);
+      return false;
+    });
 
     this.router.navigateByUrl("/account");
   }

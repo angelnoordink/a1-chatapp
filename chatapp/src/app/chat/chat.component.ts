@@ -70,7 +70,6 @@ export class ChatComponent implements OnInit {
       return false;
     });
 
-    console.log(this.groupID);
     this.userdataService.getgroupusers(this.groupID).subscribe(currentGroup => {
       this.groupUsers = currentGroup;
       console.log("Users"+JSON.stringify(currentGroup));
@@ -187,11 +186,11 @@ export class ChatComponent implements OnInit {
   assignUser(){
 
     const userGroupRoom = {
-      room_name: this.newUser,
+      user_id: this.newUser,
       group_id: this.groupID
     }
 
-    // alert(JSON.stringify(userGroupRoom));
+    alert(JSON.stringify(userGroupRoom));
 
     // Register user
     this.userdataService.assign(userGroupRoom).subscribe(data => {
@@ -202,17 +201,40 @@ export class ChatComponent implements OnInit {
       }
     });
 
+    this.userdataService.getgroupusers(this.groupID).subscribe(currentGroup => {
+      this.groupUsers = currentGroup;
+      console.log("Users"+JSON.stringify(currentGroup));
+    }, err => {
+      console.log(err);
+      return false;
+    });
+
+    window.location.reload()
   }
 
-  unassignUser(user){
-    // alert(user._id);
-    this.userdataService.unassign(user._id).subscribe(data => {
+  unassignUser(usergroup_id){
+    alert(JSON.stringify(usergroup_id));
+    this.userdataService.unassign(usergroup_id).subscribe(data => {
       if(data.success){
         alert('This user has been removed from the group');
       } else {
         alert('Something went wrong');
       }
     });
+
+    window.location.reload()
+  }
+
+  deleteGroup(){
+    this.userdataService.deleteGroup(this.groupID).subscribe(data => {
+      if(data.success){
+        alert('This user has been removed from the group');
+      } else {
+        alert('Something went wrong');
+      }
+    });
+
+    this.router.navigate(['/homepage']);
   }
 
   showUserRegion() {

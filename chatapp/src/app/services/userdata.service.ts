@@ -55,4 +55,8 @@ export class UserdataService {
     return this.http.delete(`http://localhost:3000/users/${userGroupId}`)
   }
 
+  deleteGroup(groupId): Observable<any>{
+    return this.http.delete(`http://localhost:3000/groups/group/${groupId}`)
+  }
+
 }

@@ -19,10 +19,10 @@
                           <input type="text" name="newUsername"[(ngModel)]="newUsername" class="form-control" placeholder="Enter name here">
                         </div>
                         <div class="col-5">
-                            <label class="form-label" style="font-weight: bold; padding-left:10px; font-size: larger; padding-top:5px;">User Role</label>
-                            <select class="form-control" name="sel" [(ngModel)]="newRole" [disabled] ="myrole != 'Super_Admin'">
-                              <option *ngFor="let role of roleList">
-                                  {{newRole}}
+                            <label class="form-label" style="font-weight: bold; padding-left:10px;">User Role</label>
+                            <select class="form-control" name="sel" [(ngModel)]="newRole" [disabled] ="myrole != 'super_user'">
+                              <option value="{{role}}" *ngFor="let role of roleList">
+                                  {{role}}
                               </option>
                             </select>
                         </div>
@@ -57,15 +57,18 @@
             <div class="col-3">
               <p style="font-size: 20px; padding-top:5px; padding-left: 30px;"><b>{{user.username}}</b></p>
             </div>
-            <div class="col-5">
-              <select class="form-control" name="sel" (ngModelChange)="updateRole($event.target)" [(ngModel)]="user.role" [disabled] ="myrole != 'Super_Admin'">
-                <option *ngFor="let role of roleList" [ngValue]="role">
-                    {{user.role}}
+            <div class="col-3">
+              <select class="form-control" name="sel" [(ngModel)]="user.role" [disabled] ="myrole != 'super_user'">
+                <option value="{{role}}" *ngFor="let role of roleList">
+                  {{role}}
                 </option>
               </select>
             </div>
+            <div class="col-2">
+                <button class="btn btn-primary btn-block mb-4" style="width: 100%;" [disabled] ="myrole != 'super_user'" (click)="updateRole(user)">Update </button>
+            </div>
             <div class="col-3">
-                <button class="btn btn-danger btn-block mb-4" style="width: 120px;" [disabled] ="myrole != 'Super_Admin'" >Delete </button>
+                <button class="btn btn-danger btn-block mb-4" style="width: 100%;" [disabled] ="myrole != 'super_user'" (click)="deleteUser(user.id)">Delete </button>
             </div>
         </div>
     </div>

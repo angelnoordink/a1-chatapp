@@ -60,6 +60,11 @@ export class AuthService {
     this.authToken = null;
     this.user = null;
     localStorage.clear();
+  }
 
+  updateUser(user, userId): Observable<any>{
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.patch(`http://localhost:3000/users/user/${userId}`, user, {headers: headers})
   }
 }
