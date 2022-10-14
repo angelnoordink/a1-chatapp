@@ -49,11 +49,11 @@ export class HomepageComponent implements OnInit {
     private userdataService: UserdataService,
     private authService: AuthService
     ) { 
-      this.authService.getProfile().subscribe(profile => {
-        this.username = profile.username;
-        this.email = profile.email;
-        this.role = profile.role;
-        this.userGroups = profile.groupList;
+      const currUser =  JSON.parse(localStorage.getItem('user')!);
+      console.log(currUser.id);
+
+      this.userdataService.getuser(currUser.id).subscribe(current_user => {
+        this.userGroups = current_user;
         console.log("Usergroups"+JSON.stringify(this.userGroups));
       },
       err => {
@@ -62,9 +62,9 @@ export class HomepageComponent implements OnInit {
       });
 
       // For the super users
-      this.userdataService.getgrouplist().subscribe(groups => {
-        console.log("Allgroups"+JSON.stringify(groups));
-        this.groupList = groups;
+      this.userdataService.getgrouplist().subscribe(user => {
+        console.log("Allgroups"+JSON.stringify(user));
+        this.groupList = user;
       },
       err => {
         console.log(err);

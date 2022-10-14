@@ -2,23 +2,12 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const config = require("../config/database");
 
-// User Schema
+// Group Schema
 const GroupSchema = mongoose.Schema({
     group_name: {
         type: String,
         required: true
-    },
-    userList: [
-        {
-            user_id: { type: mongoose.Types.ObjectId, ref: 'User' }
-        }
-    ],
-    roomList: [
-        {
-           room_id: { type: mongoose.Types.ObjectId, ref: 'Room' }
-        }
-    ],
-
+    }
 });
 
 const Group = module.exports = mongoose.model('Group', GroupSchema);

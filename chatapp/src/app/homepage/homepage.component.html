@@ -40,9 +40,9 @@
   </div>        
     <div fxLayout="row wrap" fxLayoutGap="16px">
       <div fxFlex="23%" fxFlex.xs="50%" fxFlex.sm="33%" *ngFor="let group of userGroups">
-        <mat-card class="mat-elevation-z4" style="margin-top: 20px;" (click)="onSelect(group._id)">
+        <mat-card class="mat-elevation-z4" style="margin-top: 20px;" (click)="onSelect(group.group._id)">
           <mat-card-header>
-            <mat-card-title>{{group.group_name}}</mat-card-title>
+            <mat-card-title>{{group.group.group_name}}</mat-card-title>
           </mat-card-header>
           <img mat-card-image src="./../assets/images/groupimage.jpeg">
           <mat-card-content>

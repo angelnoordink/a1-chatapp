@@ -19,10 +19,7 @@ const UserSchema = mongoose.Schema({
     role: {
         type: String,
         default: 'member'
-    },
-    groupList: [
-        { group_id: {type: mongoose.Types.ObjectId, ref: 'Group'} }
-    ],
+    }
 
 });
 

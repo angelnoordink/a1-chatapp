@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
 const Group = require('../models/group');
+const UserGroup = require('../models/user_group');
 
 // Register
 router.post('/register', (req, res, next) => {
@@ -49,7 +50,6 @@ router.post('/authenticate', (req, res, next) => {
                         username: user.username,
                         email: user.email,
                         role: user.role,
-                        groupList: user.groupList
                     }
                 });
             } else {
@@ -72,7 +72,6 @@ router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res,
             }
         }
     ]).then(function (users) { res.json(users[0]); console.log('user', users[0]); });
-    
 });
 
 // Get all users
@@ -85,15 +84,34 @@ router.get('/users', (req, res, next) => {
 router.get('/user/:userId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
-    User.find({"_id": ObjectId(req.params.userIf)})
-    .then((user) => res.send(user))
-    .catch((error) => console.log(error));
+    user = UserGroup.aggregate([
+        { $match:{
+                user_id: ObjectId(req.params.userId)
+            }
+        },
+        {"$lookup": { 
+            from: "groups", 
+            localField: "group_id", 
+            foreignField: "_id", 
+            as: "group" 
+        }},
+        {"$unwind":"$group"},
+    ]).then(function (usergroups) { res.json(usergroups); console.log('groups', usergroups); });
 });
 
 router.patch('/user/:userId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
     User.findOneAndUpdate({"_id": ObjectId(req.params.userIf)}, {$set: req.body })
+    .then((user)=> res.send(user))
+    .catch((error) => console.log(error));
+});
+
+
+router.delete('/user/:userId', (req, res, next) => {
+    var ObjectId = require('mongodb').ObjectId; 
+
+    User.findByIdAndDelete({"_id": ObjectId(req.params.userIf)})
     .then((user)=> res.send(user))
     .catch((error) => console.log(error));
 });

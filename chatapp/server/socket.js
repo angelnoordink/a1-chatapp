@@ -33,7 +33,7 @@ module.exports = {
             socket.on('getGroups', (data) => {
                 let groups = [];
                 data.groupList.forEach((group) => {
-                    groups.push({group_id: group.group_id, group_name: group.group_name, role: group.role, rooms: group.rooms});
+                    groups.push({group_name: group.group_name, role: group.role, rooms: group.rooms});
                 });
                 localStorage.setItem("groups", JSON.stringify(groups));
                 this.groups = groups;
@@ -80,22 +80,6 @@ module.exports = {
                 }
                 
             });
-            
-
-            // socket.on('disconnect', ()=>{
-            //     chat.emit("disconnect");
-            //     for (let i=0; i<socketRoom.length; i++) {
-            //         if (socketRoom[i][0] == socket.room){
-            //             socketRoom.splice(i,1);
-            //         } 
-            //     }
-            //     for (let j=0; j < socketRoomNum.length; j++){
-            //         if(socketRoomNum[j][0] == socketRoom) {
-            //             socketRoomNum[j][1] = socketRoomNum[j][1] -1;
-            //         }
-            //     }
-            //     console.log("Client disconnected.")
-            // });
             
         });
 

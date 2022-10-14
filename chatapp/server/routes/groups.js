@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
 const Group = require('../models/group');
+const UserGroup = require('../models/user_group');
 
 
 // get all groups
@@ -26,26 +27,10 @@ router.post('/addgroup', (req, res, next) => {
         .then((group) => res.send(group))
         .catch((error) => console.log(error));
 
-    // Maybe also assign new group tp current user.
 });
 
 
-// UserGroup
-router.get('/group', (req, res, next) => {
-    const group = req.body.group;
 
-    group = Group.aggregate([
-        {
-            $lookup:
-            {
-                from: "rooms",
-                localField: "roomList.room_id",
-                foreignField: "_id",
-                as: "roomList"
-            }
-        }
-    ]).then(function (groups) { res.json(groups[0]); console.log('group', groups[0]); });
-});
 
 router.get('/group/:groupId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
@@ -53,6 +38,24 @@ router.get('/group/:groupId', (req, res, next) => {
     Group.find({"_id": ObjectId(req.params.groupId)}, function(err, group) {
         res.send(group);
     });
+});
+
+router.get('/groupusers/:groupId', (req, res, next) => {
+    var ObjectId = require('mongodb').ObjectId; 
+
+    group = UserGroup.aggregate([
+        { $match:{
+                group_id: ObjectId(req.params.groupId)
+            }
+        },
+        {"$lookup": { 
+            from: "users", 
+            localField: "user_id", 
+            foreignField: "_id", 
+            as: "user" 
+        }},
+        {"$unwind":"$user"},
+    ]).then(function (usergroups) { res.json(usergroups); console.log('users', usergroups); });
 });
 
 

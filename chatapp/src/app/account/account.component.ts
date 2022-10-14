@@ -27,10 +27,10 @@ export class AccountComponent implements OnInit {
   ngOnInit() {
     this.authService.getProfile().subscribe(profile => {
       console.log(profile.user);
-      this.username = profile.user.username;
-      this.email = profile.user.email;
-      this.role = profile.user.role;
-      this.groupList = profile.user.groupList;
+      this.username = profile.username;
+      this.email = profile.email;
+      this.role = profile.role;
+      this.groupList = profile.groupList;
     },
     err => {
       console.log(err);

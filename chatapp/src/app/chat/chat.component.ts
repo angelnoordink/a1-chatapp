@@ -35,6 +35,7 @@ export class ChatComponent implements OnInit {
   groups: [] = [];
   username = "";
   role: string = "";
+  groupUsers: any = [];
   
 
   constructor(
@@ -49,12 +50,19 @@ export class ChatComponent implements OnInit {
 
     // For the super users
     this.userdataService.getgroup(this.groupID).subscribe(group => {
-      // this.groupString = JSON.stringify(groups[0]);
-      console.log(group[0]);
-      this.group = group[0]
+      console.log("GROIPPPP"+JSON.stringify(group[0]));
+      this.group = group[0];
       this.groupName = this.group.group_name;
-      console.log(this.groupName);
-      this.rooms = this.group.roomList;
+    },
+    err => {
+      console.log(err);
+      return false;
+    });
+
+    console.log(this.groupID);
+    this.userdataService.getgroupusers(this.groupID).subscribe(currentGroup => {
+      this.groupUsers = currentGroup;
+      console.log("Users"+JSON.stringify(currentGroup));
     },
     err => {
       console.log(err);
@@ -73,7 +81,7 @@ export class ChatComponent implements OnInit {
     });
     this.chatService.reqRoomList(this.rooms);
     this.chatService.getRoomList((msg:any)=>{this.rooms = JSON.parse(msg)});
-    // console.log(this.rooms)
+    console.log(this.rooms)
     this.chatService.notice((msg:any)=>{this.roomNotice = msg});
     this.chatService.joined((msg:any)=>{this.currentRoom = msg
       if (this.currentRoom != "") {
@@ -137,7 +145,7 @@ export class ChatComponent implements OnInit {
             return arr[d];
         }
     }
-}
+  }
 
   
 }
