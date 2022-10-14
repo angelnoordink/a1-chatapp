@@ -68,6 +68,7 @@ http.listen(port, () => {
 // Apply express middle
 app.use(bodyParser.urlencoded({extended: true}));
 const url = 'mongodb://localhost:27017';
+
 app.use(express.urlencoded( {extended: false} ));
 
 
