@@ -1,7 +1,6 @@
 module.exports = {
 
     connect: function(io, PORT){
-        var groups=[];
         var roomList=[];
         var socketRoom = [];
         var socketRoomNum = [];
@@ -9,7 +8,7 @@ module.exports = {
         
         const chat = io.of('/chat');
 
-        chat.on('connection',(socket) => {
+        io.on('connection',(socket) => {
             console.log('User connection on port '+ PORT + ' : ' + socket.id);
 
             socket.on('message', (message)=>{
@@ -28,15 +27,6 @@ module.exports = {
                 roomList.push(rooms);
                 chat.emit('rooms', JSON.stringify(roomList));
                 this.rooms = roomList;
-            });
-
-            socket.on('getGroups', (data) => {
-                let groups = [];
-                data.groupList.forEach((group) => {
-                    groups.push({group_name: group.group_name, role: group.role, rooms: group.rooms});
-                });
-                localStorage.setItem("groups", JSON.stringify(groups));
-                this.groups = groups;
             });
 
             socket.on('numUsers', (room)=>{

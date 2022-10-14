@@ -79,7 +79,7 @@ export class UsersComponent implements OnInit {
     // Register user
     this.authService.registerUser(newUser).subscribe(data => {
       if(data.success){
-        alert('This user is now registered and can log in');
+        alert('This user is now created');
       } else {
         alert('Something went wrong');
       }

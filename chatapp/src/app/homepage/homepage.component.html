@@ -1,10 +1,10 @@
 <div class="content">
     <h2 style="text-align: center; margin-left:auto; margin-right:auto;">Chat Groups</h2>
-    <button class="btn btn-success btn-block mb-4 centerbtn" *ngIf="!createGroup" (click)="showCreateGroupRegion()">Create Group </button>
+    <button class="btn btn-success btn-block mb-4 centerbtn" *ngIf="!createGroup" (click)="showCreateGroupRegion()" [disabled] ="userRole == 'group_assis' || userRole == 'member'">Create Group </button>
     <div class="groupform" *ngIf="createGroup">
       <div class="tab-content" style="padding-top: 10px;">
           <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-              <form>
+              <form (submit)="onFormSubmit()">
                   <h2>Create Group</h2>
                   <div class="form-outline mb-4" style="margin-top: 20px;">
                     <div class="row">
@@ -13,24 +13,9 @@
                         <input type="text" name="newGroupName" id ="newGroupName" [(ngModel)]="newGroupName" class="form-control" placeholder="Enter group name here">
                       </div>
                     </div>
-                    <div class="row" style="margin-top:10px;">
-                      <div class="col-9">
-                        <label class="form-label" for="newRoom" style="font-weight: bold;">Add Room/s</label>
-                        <input type="text" name="newRoom" id ="newRoom" class="form-control" [(ngModel)]="newRoom" placeholder="Enter room name here">
-                      </div>
-                      <div class="col-2">
-                        <button class="btn btn-primary btn-block mb-4" style="width: 120px; margin-top: 30px;" (click)="assignRooms()">Add Room</button>
-                      </div>
-                    </div>
-                    <div class="row" style="margin-top:-5px;">
+                    <div class="row" style="margin-top: 10px;">
                       <div class="col-12">
-                        <label class="form-label" for="newRoomList" style="font-weight: bold;">Rooms:</label><br>
-                        <em *ngFor="let room of newRoomList">{{room}}, </em>
-                      </div>
-                    </div>
-                    <div class="row" style="margin-top: -10px;">
-                      <div class="col-12">
-                        <button class="btn btn-success btn-block mb-4 centerbtn" style="width: 200px" (click)="createNewGroup()">Create Group</button>
+                        <button class="btn btn-success btn-block mb-4 centerbtn" style="width: 200px" type="submit">Create Group</button>
                       </div>
                     </div>
                   </div>
@@ -38,18 +23,23 @@
           </div>
       </div>
   </div>        
-    <div fxLayout="row wrap" fxLayoutGap="16px">
+    <div fxLayout="row wrap" fxLayoutGap="16px" *ngIf="isSuper">
+      <div fxFlex="23%" fxFlex.xs="50%" fxFlex.sm="33%" *ngFor="let group of groupList">
+        <mat-card class="mat-elevation-z4" style="margin-top: 20px;" (click)="onSelect(group._id)">
+          <mat-card-header>
+            <mat-card-title>{{group.group_name}}</mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="./../assets/images/groupimage.jpeg">
+        </mat-card>
+      </div>
+    </div>
+    <div fxLayout="row wrap" fxLayoutGap="16px" *ngIf="!isSuper">
       <div fxFlex="23%" fxFlex.xs="50%" fxFlex.sm="33%" *ngFor="let group of userGroups">
         <mat-card class="mat-elevation-z4" style="margin-top: 20px;" (click)="onSelect(group.group._id)">
           <mat-card-header>
-            <mat-card-title>{{group.group.group_name}}</mat-card-title>
+            <mat-card-title >{{group.group.group_name}}</mat-card-title>
           </mat-card-header>
           <img mat-card-image src="./../assets/images/groupimage.jpeg">
-          <mat-card-content>
-            <!-- <ul *ngFor="let room of group.rooms">
-              <li>{{room}}</li>
-            </ul> -->
-          </mat-card-content>
         </mat-card>
       </div>
     </div>

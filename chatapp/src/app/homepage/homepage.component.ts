@@ -26,17 +26,15 @@ const BACKEND_URL = 'http://localhost:3000';
 export class HomepageComponent implements OnInit {
   username: String = '';
   email: String = '';
-  role: String = '';
   groupList: any = [];
-  userGroupList: any = [];
   userGroups: any = [];
   
   createGroup: Boolean = false;
+  isSuper: Boolean = false;
 
   newGroupName: string = '';
-  newRoom: string = '';
-  newRoomList: any = [];
-  groupId: number = 0;
+
+  userRole: string = '';
 
   constructor(
     private browserAnimationsModule: BrowserAnimationsModule,
@@ -49,32 +47,33 @@ export class HomepageComponent implements OnInit {
     private userdataService: UserdataService,
     private authService: AuthService
     ) { 
-      const currUser =  JSON.parse(localStorage.getItem('user')!);
-      console.log(currUser.id);
-
-      this.userdataService.getuser(currUser.id).subscribe(current_user => {
-        this.userGroups = current_user;
-        console.log("Usergroups"+JSON.stringify(this.userGroups));
-      },
-      err => {
-        console.log(err);
-        return false;
-      });
-
-      // For the super users
-      this.userdataService.getgrouplist().subscribe(user => {
-        console.log("Allgroups"+JSON.stringify(user));
-        this.groupList = user;
-      },
-      err => {
-        console.log(err);
-        return false;
-      });
-      
 
     }
 
   ngOnInit(): void {
+    const currUser =  JSON.parse(localStorage.getItem('user')!);
+    this.userRole = currUser.role;
+      
+      // If user is super user, allow to view all groups, otherwise only show assigned groups.
+      if (currUser.role == 'super_user') {
+        this.userdataService.getgrouplist().subscribe(groups => {
+          this.isSuper = true;
+          this.groupList = groups;
+        },
+        err => {
+          console.log(err);
+          return false;
+        });
+      } else {
+        this.userdataService.getuser(currUser.id).subscribe(current_user => {
+          this.isSuper = false;
+          this.userGroups = current_user;
+        },
+        err => {
+          console.log(err);
+          return false;
+        });
+      }
   }
 
   onSelect(group_id:any){
@@ -85,41 +84,21 @@ export class HomepageComponent implements OnInit {
     this.createGroup = true;
   }
 
-  // assignUser() {
-    
-  //   this.newUserListOutput.push(JSON.stringify({username: this.inputUsername, email: this.inputEmail}));
-  //   this.newUserList.push({username: this.inputUsername, email: this.inputEmail});
+  onFormSubmit(){
+    const newGroup = {
+      group_name: this.newGroupName
+    }
 
+    // Register user
+    this.userdataService.createGroup(newGroup).subscribe(data => {
+      if(data.success){
+        alert('This group has been created');
+        window.location.reload()
 
-  //   let userobj = {
-  //     'username': this.inputUsername, 
-  //     'email': this.inputEmail
-  //   }
+      } else {
+        alert('Something went wrong');
+      }
+    });
 
-    
-
-  //   localStorage.getItem("data");
-
-  //   this.inputUsername = "";
-  //   this.inputEmail = "";
-  // }
-
-
-  
-  assignRooms() {
-
-    // for (let i = 0; i < this.newUserList.length; i++) {
-    //   // {username: this.inputUsername, email: this.inputEmail}
-    // }
-    
-    this.newRoomList.push(this.newRoom);
-    console.log(this.newRoomList);
-    this.newRoom = "";
-  }
-
-  createNewGroup() {
-    
-
-    
   }
 }

@@ -4,7 +4,6 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
-const Group = require('../models/group');
 const UserGroup = require('../models/user_group');
 
 // Register
@@ -59,7 +58,7 @@ router.post('/authenticate', (req, res, next) => {
     });
 });
 
-// Profile
+// Get User Profile
 router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res, next) => {
     const user = User.aggregate([
         {
@@ -81,6 +80,7 @@ router.get('/users', (req, res, next) => {
     });
 });
 
+// Get user
 router.get('/user/:userId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
@@ -99,39 +99,69 @@ router.get('/user/:userId', (req, res, next) => {
     ]).then(function (usergroups) { res.json(usergroups); console.log('groups', usergroups); });
 });
 
+// Update user
 router.patch('/user/:userId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
-    User.findOneAndUpdate({"_id": ObjectId(req.params.userIf)}, {$set: req.body })
-    .then((user)=> res.send(user))
-    .catch((error) => console.log(error));
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+
+    User.findOneAndUpdate({_id:ObjectId(req.params.userId)},{$set:{username:req.body.username,email:req.body.email,role:req.body.role}},(err, user)=>{
+        if(err){
+            res.json({success: false, msg: 'Failed to update user'});
+        } else {
+            res.json({success: true, msg: 'User Updated'});
+        }
+    });
+
 });
 
-
+// Delete user
 router.delete('/user/:userId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
-    User.findByIdAndDelete({"_id": ObjectId(req.params.userIf)})
-    .then((user)=> res.send(user))
-    .catch((error) => console.log(error));
+    User.findOneAndDelete({_id:ObjectId(req.params.userId)}, function(err, user) {
+        if(err){
+            res.json({success: false, msg: 'Failed to delete user'});
+        } else {
+            res.json({success: true, msg: 'User deleted'});
+        }
+    });
 });
 
-// Add group to user
-// router.post('/addgrouptouser', (req, res, next) => {
-//     const user_id = req.body.user_id;
-//     const group_id = req.body.group_id;
-    
-//     User.updateOne({_id: user_id}, {
-//         $push: {
-//             groupList: {group: group_id}
-//         }
-//     })
-//     Group.updateOne({_id: group_id}, {
-//         $push: {
-//             userList: {user_id}
-//         }
-//     })
-// });
+// Assign user to group
+router.post('/assign', (req, res, next) => {
+    var ObjectId = require('mongodb').ObjectId; 
+    groupId = ObjectId(req.body.group_id);
+    userId = ObjectId(req.body.user_id);
+
+    let newUserGroup = {
+        group_id: groupId,
+        user_id: userId
+    }
+
+    UserGroup.create(newUserGroup, (err, usergroup) => {
+        if(err){
+            res.json({success: false, msg: 'Failed to assign user to group'});
+        } else {
+            res.json({success: true, msg: 'User assigned to group'});
+        }
+    });
+});
+
+// Unassign user from group
+router.delete('/:userGroupId', (req, res, next) => {
+    var ObjectId = require('mongodb').ObjectId; 
+
+    UserGroup.findOneAndDelete({_id:ObjectId(req.params.userGroupId)}, function(err, usergroup) {
+        if(err){
+            res.json({success: false, msg: 'Failed to remove user from group'});
+        } else {
+            res.json({success: true, msg: 'User removed from group'});
+        }
+    });
+});
 
 
 module.exports = router;

@@ -27,15 +27,18 @@ export class ChatComponent implements OnInit {
   roomsList: string = "";
   currentRoom: string = "";
   messages: string[] = [];
-  rooms: string[] = [];
+  rooms: any = [];
   newRoom: string = "";
+  newUser: string = "";
   isinRoom: boolean = false;
+  userRegion: boolean = false;
   roomNotice: string = "";
   numUsers: number= 0;
   groups: [] = [];
   username = "";
   role: string = "";
   groupUsers: any = [];
+  allUsers: any = [];
   
 
   constructor(
@@ -47,14 +50,22 @@ export class ChatComponent implements OnInit {
     public userdataService: UserdataService
   ) { 
     this.groupID = this.route.snapshot.paramMap.get('group_id');
+  }
+
+  
+  ngOnInit(): void {
+    
+    const currUser =  JSON.parse(localStorage.getItem('user')!);
+    this.role = currUser.role;
+
+    this.groupID = this.route.snapshot.paramMap.get('group_id');
 
     // For the super users
     this.userdataService.getgroup(this.groupID).subscribe(group => {
-      console.log("GROIPPPP"+JSON.stringify(group[0]));
+      console.log("Group"+JSON.stringify(group[0]));
       this.group = group[0];
       this.groupName = this.group.group_name;
-    },
-    err => {
+    }, err => {
       console.log(err);
       return false;
     });
@@ -63,19 +74,30 @@ export class ChatComponent implements OnInit {
     this.userdataService.getgroupusers(this.groupID).subscribe(currentGroup => {
       this.groupUsers = currentGroup;
       console.log("Users"+JSON.stringify(currentGroup));
+    }, err => {
+      console.log(err);
+      return false;
+    });
+
+    this.userdataService.getuserlist().subscribe(users => {
+      this.allUsers = users;
+      console.log("AllUSers"+JSON.stringify(this.allUsers));
     },
     err => {
       console.log(err);
       return false;
     });
 
-  }
+    this.userdataService.getrooms(this.groupID).subscribe(roomList => {
+      roomList.forEach( (element) => {
+        this.rooms.push(element.room_name);
+      });
+      console.log("rooms"+JSON.stringify(roomList));
+    }, err => {
+      console.log(err);
+      return false;
+    });
 
-  
-  ngOnInit(): void {
-    
-    this.role = localStorage.getItem('role')!;
-    
     this.chatService.getMessage().subscribe((message: string) => {
       this.messages.push(message);
     });
@@ -94,11 +116,10 @@ export class ChatComponent implements OnInit {
 
   
   joinRoom(){
-    console.log("RoomList  " + this.roomsList);
     this.chatService.joinRoom(this.roomsList);
     this.chatService.reqNumUsers(this.roomsList);
     this.chatService.getNumUsers((res:any)=>{this.numUsers = res});
-    this.currentRoom = this.roomsList
+    this.currentRoom = this.roomsList;
     this.isinRoom = true;
     this.roomNotice = "A new user has joined";
   }
@@ -125,9 +146,25 @@ export class ChatComponent implements OnInit {
     this.chatService.reqRoomList(this.rooms);
     this.rooms.push(this.newRoom);
     this.isinRoom = true;
-    this.newRoom = "";
     this.roomNotice = "A new user has joined";
+
+    const newRoomObj = {
+      room_name: this.newRoom,
+      group_id: this.groupID
+    }
+
+    // Register user
+    this.userdataService.createRoom(newRoomObj).subscribe(data => {
+      if(data.success){
+        alert('A new room has been created');
+      } else {
+        alert('Something went wrong');
+      }
+    });
+
+    this.newRoom = "";
   }
+  
 
   sendMessage() {
     console.log("Message  " + this.messagecontent);
@@ -147,5 +184,43 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  
+  assignUser(){
+
+    const userGroupRoom = {
+      room_name: this.newUser,
+      group_id: this.groupID
+    }
+
+    // alert(JSON.stringify(userGroupRoom));
+
+    // Register user
+    this.userdataService.assign(userGroupRoom).subscribe(data => {
+      if(data.success){
+        alert('This user has been assigned to the group');
+      } else {
+        alert('Something went wrong');
+      }
+    });
+
+  }
+
+  unassignUser(user){
+    // alert(user._id);
+    this.userdataService.unassign(user._id).subscribe(data => {
+      if(data.success){
+        alert('This user has been removed from the group');
+      } else {
+        alert('Something went wrong');
+      }
+    });
+  }
+
+  showUserRegion() {
+    this.userRegion = true;
+  }
+
+  hideUserRegion() {
+    this.userRegion = false;
+  }
+
 }

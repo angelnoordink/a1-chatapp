@@ -16,7 +16,7 @@ export class AuthService {
     private http: HttpClient,
     public jwtHelper: JwtHelperService
   ) { }
-  
+  // 
 
   registerUser(user): Observable<any>{
     let headers = new HttpHeaders();

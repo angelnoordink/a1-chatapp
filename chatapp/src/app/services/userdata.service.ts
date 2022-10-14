@@ -29,25 +29,30 @@ export class UserdataService {
     return this.http.get(`http://localhost:3000/users/user/${userId}`)
   }
 
-  // getProfile(): Observable<any>{
-  //   this.loadToken();
-  //   const headers = new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     'Authorization': this.authToken
-  //   });
-  //   return this.http.get('http://localhost:3000/users/profile', {headers: headers})
-  // }
+  getrooms(groupId): Observable<any>{
+    return this.http.get(`http://localhost:3000/groups/room/${groupId}`)
+  }
 
-  // updateuser(user:User){
-  //   return this.http.post<any>('http://localhost:3000/api/updateuser', user);
-  // }
+  createGroup(group): Observable<any>{
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/groups/add', group, {headers: headers})
+  }
 
-  // deleteuser(userID: number){
-  //   return this.http.post<any>('http://localhost:3000/api/deleteuser', {'userid':userID});
-  // }
+  createRoom(room): Observable<any>{
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/groups/room', room, {headers: headers})
+  }
 
-  // getusercount(){
-  //   return this.http.get<any>('http://localhost:3000/api/usercount');
-  // }
+  assign(usergroup): Observable<any>{
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/users/assign', usergroup, {headers: headers})
+  }
+
+  unassign(userGroupId): Observable<any>{
+    return this.http.delete(`http://localhost:3000/users/${userGroupId}`)
+  }
 
 }
