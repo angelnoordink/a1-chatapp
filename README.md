@@ -1,20 +1,6 @@
 #### 3813ICT Assignment 1 - Phase 2
 # Angular Chat App
 **Angelique Noordink - s5215609**  
-  
-
-## To Do List
-- [ ] Add Table of Contents
-- [ ] Video Recording of Site
-- [ ] ERD Diagram image
-- [ ] Add Personal details
-- [ ] Describe the organisation of your Git repository and how you used it during the development of your solution 
-- [ ] Description of data structures used in the client and server to represent the various entities, e.g.: users, groups, channels, etc
-- [ ] A description of how you divide the responsibilities between client and server (you are encouraged to have the server provide a REST API which returns JSON in addition to a static directory) 
-- [ ] A list of routes, parameters, return values, and purpose 
-- [ ] Angular architecture: components, services, models, routes 
-- [ ] Describe the details of the interaction between client and server by indicating how the files and global vars in server side will be changed and how the display of each angular component page will be updated. 
-
 
 ---
 ## Git
@@ -62,57 +48,226 @@ Rooms is an array that consist of a room object. A room has an id and a room nam
 ---
 ## REST API
 To be completed ...
-### Auth Route
-**Route:** `/api/auth`  
-**Method:** `POST`  
-**Parameters:** `{username: string, password: string}`  
-**Return Value:**   
-```
-`{username: string, password: string}`  
-```
-Technical Explanation paragraph.    
+http://localhost:3000/
 
-### Create User
+### Register User
+This api end-point adds new user to user collection in the db. This route will be called on the action of 'Create User'. By default the role of the user will be set as 'member'. 
+
+**Route:** `/users/register`  
+**Method:** `POST`  
+**Header Parameters:**
+| Key                       | Value                        |
+| ------------------------- | -----------------------------|
+| Content-Type              | application/json             |
+
+**Request Body:**
+```
+{
+    username: string, 
+    email: string, 
+    password: string
+}
+```
+**Response Body:**   
+```
+{
+    success: boolean,
+    msg: string
+}  
+```
+
+
+
+### Authenticate User
+This api end-point authenticates the current user by checking that the user exists within the user collection in the db, as well as checking that the password matches. This route will be called on submission of the user login form and if response is not successful the login will fail.
+
+**Route:** `/users/authenticate`  
+**Method:** `POST`  
+**Header Parameters:**
+| Key                       | Value                        |
+| ------------------------- | -----------------------------|
+| Content-Type              | application/json             |
+
+**Request Body:**
+```
+{
+    username: string, 
+    password: string
+}
+```
+**Response Body:**   
+```
+{
+    success: boolean,
+    token: string,
+    user: {
+        id: string,
+        username: string,
+        email: string,
+        role: string,
+        groupList: [
+             {
+                 _id: string,
+                 group_id: string
+             }
+        ]
+    }
+} 
+```
+
+
+### Get User Profile
+This api end-point retrieves the current users details from the user collection in the db. This route will be called on init of the homepage in order to display the corresponding groups for the selected user.
+
+**Route:** `/users/profile`  
+**Method:** `GET`  
+**Header Parameters:**
+| Key                       | Value                        |
+| ------------------------- | -----------------------------|
+| Authorization             | JWT Token (String)           |
+
+**Response Body:**   
+```
+{
+    id: string,
+    username: string,
+    email: string,
+    role: string,
+    groupList: [
+         {
+             _id: string,
+             group_name: string,
+             roomList: [
+                   {  room_id: string  }
+             ]
+         }
+    ]
+} 
+```
+
+
+### Get All Users
+This api end-point retrieves all of the users within the user collection in the db. This route will be called on init of the users page.
+
+**Route:** `/users/users`  
+**Method:** `GET`  
+**Response Body:**   
+```
+[
+    {
+        id: string,
+        username: string,
+        email: string,
+        role: string,
+        groupList: [
+             {
+                 _id: string,
+                 group_id: string
+             }
+        ]
+    } 
+]
+```
 
 
 ### Update User
+```diff
+@@ UPDATE SECTION @@
+```
+This api end-point updates the specific user within the user collection in the db. The user_id is specified through the query parameter 'userId' which is to be of type string. This route will be called on the action of updating user details or setting the user role.
+
+**Route:** `/users/user/:userId`  
+**Method:** `PATCH`  
+**Request Body:**
+```
+{
+    username: string, 
+    email: string, 
+    role: string,
+}
+```
+**Response Body:**   
+```
+{
+
+}  
+```
 
 
 ### Delete User
+```diff
+@@ UPDATE SECTION @@
+```
+This api end-point deletes the specific user from the user collection in the db. The user_id is specified through the query parameter 'userId' which is to be of type string. This route will be called on the action of deleting the user.
+
+**Route:** `/users/user/{userId}`  
+**Method:** `DELETE`  
+**Response Body:**   
+```
+{
+
+}  
+```
+
+### Get All Groups
+This api end-point retrieves all of the groups within the group collection in the db. This route will be called to get all existing groups for when a superuser views the homepage.
+
+**Route:** `/groups/groups`  
+**Method:** `GET`  
+**Response Body:**   
+```
+[
+    {
+        id: string,
+        group_name: string,
+        roomList: [
+             {
+                 _id: string,
+                 room_id: string
+             }
+        ]
+    } 
+]
+```
 
 
-### Get Users
+### Get Group Details
+This api end-point retrieves the current group details from the group collection in the db. The group_id is specified through the query parameter 'groupId' which is to be of type string. This route will be called after routing to the messages page to get the selected group.
+```diff
+@@ UPDATE SECTION @@
+```
+**Route:** `/groups/group/:groupId`  
+**Method:** `GET`  
+**Response Body:**   
+```
+[
+    {
+        id: string,
+        group_name: string,
+        roomList: [
+             {
+                 _id: string,
+                 room_id: string
+             }
+        ]
+    } 
+]
+```
 
 
-### Get User Groups
-
-
-### Get User Details
-
-
-### Assign User to Group
-
-
-### Assign User to Role
-
-
-### Join User into Room
-
-  
 ### Create Group
-
-
-### Update Group
-
 
 ### Delete Group
 
+### Get Group Users
 
-### Remove User from Group
+### Get Group Rooms
 
+### Remove User from Group 
+
+### Assign User to Group 
 
 ### Create Room
-
 
 ### Delete Room
 
@@ -131,7 +286,7 @@ The user management console allows the key users to manage other site users via 
 ### Account
 The account allows the user to view and update their personal details.
 ### Server
-Using Express.js, cors, etc.
+Using Express.js, cors, etc. A description of how you divide the responsibilities between client and server (you are encouraged to have the server provide a REST API which returns JSON in addition to a static directory).
 ### Sockets
 The account allows the user to view and update their personal details.
 ### Database
@@ -142,3 +297,15 @@ The account allows the user to view and update their personal details.
 The account allows the user to view and update their personal details.
 ### User Interface Design.
 The account allows the user to view and update their personal details.
+
+
+
+
+---
+## References
+
+Web Dev Simplified. (2019, May 14). *Build A REST API With Node.js, Express, & MongoDB - Quick* [Video]. YouTube. Retrieved October 9, 2022, from https://www.youtube.com/watch?v=fgTGADljAeg
+
+Rosa, S. G. da. (2020, February 19). *Angular: Unit Testing Jasmine, Karma (step by step).* Medium. Retrieved October 11, 2022, from https://medium.com/swlh/angular-unit-testing-jasmine-karma-step-by-step-e3376d110ab4
+
+Kreider, D. (2022, February 3). *How to use Protractor with Angular 12 or greater.* Retrieved October 12, 2022, from https://danielk.tech/home/angular-12-and-protractor
