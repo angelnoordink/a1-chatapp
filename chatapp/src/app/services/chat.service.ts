@@ -14,7 +14,7 @@ export class ChatService {
   
   constructor() {}
 
-  socket = io('http://localhost:3000/chat');
+  socket = io('http://localhost:3000');
 
   
   joinRoom(selRoom: any): void {

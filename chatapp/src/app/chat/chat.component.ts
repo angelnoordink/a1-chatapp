@@ -97,7 +97,7 @@ export class ChatComponent implements OnInit {
       return false;
     });
 
-    this.chatService.getMessage().subscribe((message: string) => {
+    this.chatService.getMessage().subscribe((message) => {
       this.messages.push(message);
     });
     this.chatService.reqRoomList(this.rooms);

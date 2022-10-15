@@ -6,26 +6,26 @@ module.exports = {
         var socketRoomNum = [];
         var joinedRoom = "";
         
-        const chat = io.of('/chat');
+        // const chat = io.of('/chat');
 
         io.on('connection',(socket) => {
             console.log('User connection on port '+ PORT + ' : ' + socket.id);
 
             socket.on('message', (message)=>{
-                chat.to(joinedRoom).emit('message', message);
+                io.to(joinedRoom).emit('message', message);
             });
 
             socket.on('newRoom', (newRoom)=>{
                 if (roomList.indexOf(newRoom) == -1 ) {
                     roomList.push(newRoom);
-                    chat.emit('roomList', JSON.stringify(roomList));
+                    io.emit('roomList', JSON.stringify(roomList));
                 }
             });
 
             socket.on('roomList', (rooms)=>{
                 let roomList = [];
                 roomList.push(rooms);
-                chat.emit('rooms', JSON.stringify(roomList));
+                io.emit('rooms', JSON.stringify(roomList));
                 this.rooms = roomList;
             });
 
@@ -38,7 +38,7 @@ module.exports = {
                     }
                 }
 
-                chat.in(room).emit('numUsers', userCount);
+                io.in(room).emit('numUsers', userCount);
             });
 
             socket.on('joinRoom', (room) => {
@@ -54,7 +54,7 @@ module.exports = {
                     if (socketRoom[i][0] == socket.id){
                         socketRoom.splice(i,1);
                         socket.leave(room);
-                        chat.to(room).emit("notice", "A user has left");
+                        io.to(room).emit("notice", "A user has left");
                         socket.emit('notice', "A user has left");
                     }
                 }
