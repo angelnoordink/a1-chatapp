@@ -1,10 +1,6 @@
-import { Component, createPlatform, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
-
-
-const BACKEND_URL = 'http://localhost:3000';
 
 @Component({
   selector: 'app-login',
@@ -18,22 +14,22 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private httpClient: HttpClient,
     private authService: AuthService
   ) { }
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
+  // Submit login details
   onLoginSubmit(){
     const user = {
       username: this.username,
       password: this.password
     }
     
+    // Authenticate user login by checking validity of details in database
     this.authService.authenticateUser(user).subscribe(data => {
       if(data.success){
+        // Store user data and token in local storage for reference
         this.authService.storeUserData(data.token, data.user);
         alert("You are now logged in");
         this.router.navigate(['homepage']);
@@ -42,8 +38,6 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['login']);
       }
     });
-
   }
-
 }
 

@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const config = require("../config/database");
 
 // User Schema
+// References group_id to allow for aggregation.
+// Creates 1-to-Many relationship between Group and Room.
 const RoomSchema = mongoose.Schema({
     room_name: {
         type: String,

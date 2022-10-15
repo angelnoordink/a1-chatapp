@@ -19,7 +19,6 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard]}
 ];
 
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

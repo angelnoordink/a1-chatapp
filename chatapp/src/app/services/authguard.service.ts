@@ -9,6 +9,8 @@ import { AuthService } from './auth.service';
 export class AuthGuard implements CanActivate {
   constructor(private router: Router, public authService: AuthService) { }
   
+  // Allows authguard to activate on routes.
+  // Protects site data and access.
   canActivate():any {
     if (this.authService.loggedIn()){
       return true;

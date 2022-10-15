@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 
 @Component({
@@ -8,6 +7,7 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
   title = 'a1-chatapp';
   username = localStorage.getItem('username');
@@ -19,6 +19,10 @@ export class AppComponent {
     private router: Router,
     public authService: AuthService
   ){ 
+  }
+
+  ngOnInit() {
+    // Checks whether user is logged.
     if (localStorage.getItem('user') != null){
       this.loggedIn = true;
     } else {
@@ -29,10 +33,7 @@ export class AppComponent {
     }, 3000);
   }
 
-  ngOnInit() {
-    // this.isLoggedIn();
-  }
-
+  // Log out current user.
   logout() {
     this.authService.logout();
     alert("You have been logged out");

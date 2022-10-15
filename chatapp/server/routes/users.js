@@ -6,7 +6,7 @@ const config = require('../config/database');
 const User = require('../models/user');
 const UserGroup = require('../models/user_group');
 
-// Register
+// Register/Create User.
 router.post('/register', (req, res, next) => {
     let newUser = new User({
         username: req.body.username,
@@ -23,7 +23,7 @@ router.post('/register', (req, res, next) => {
     });
 });
 
-// Authenticate
+// Authenticate user details.
 router.post('/authenticate', (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -40,7 +40,6 @@ router.post('/authenticate', (req, res, next) => {
                 const token = jwt.sign({data: user}, config.secret, {
                     expiresIn: 604800 // 1 week
                 });
-
                 res.json({
                     success: true,
                     token: 'JWT ' + token,
@@ -58,7 +57,7 @@ router.post('/authenticate', (req, res, next) => {
     });
 });
 
-// Get User Profile
+// Get specific User Profile from Auth token.
 router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res, next) => {
     const user = User.aggregate([
         {
@@ -73,14 +72,14 @@ router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res,
     ]).then(function (users) { res.json(users[0]); console.log('user', users[0]); });
 });
 
-// Get all users
+// Get all users.
 router.get('/users', (req, res, next) => {
     User.find({}, function(err, users) {
         res.send(users);
     });
 });
 
-// Get user
+// Get user details for specific user.
 router.get('/user/:userId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
@@ -99,7 +98,7 @@ router.get('/user/:userId', (req, res, next) => {
     ]).then(function (usergroups) { res.json(usergroups); console.log('groups', usergroups); });
 });
 
-// Update user
+// Update user details.
 router.patch('/user/:userId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
@@ -117,7 +116,7 @@ router.patch('/user/:userId', (req, res, next) => {
 
 });
 
-// Delete user
+// Delete user.
 router.delete('/user/:userId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
@@ -130,7 +129,7 @@ router.delete('/user/:userId', (req, res, next) => {
     });
 });
 
-// Assign user to group
+// Assign user to group.
 router.post('/assign', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
     groupId = ObjectId(req.body.group_id);
@@ -150,7 +149,7 @@ router.post('/assign', (req, res, next) => {
     });
 });
 
-// Unassign user from group
+// Remove user from group.
 router.delete('/:userGroupId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
@@ -162,6 +161,5 @@ router.delete('/:userGroupId', (req, res, next) => {
         }
     });
 });
-
 
 module.exports = router;

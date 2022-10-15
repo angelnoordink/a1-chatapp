@@ -1,14 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ChatService } from '../services/chat.service';
-import { io } from "socket.io-client";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserdataService } from '../services/userdata.service';
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-}
 
 @Component({
   selector: 'app-chat',
@@ -21,9 +14,6 @@ export class ChatComponent implements OnInit {
   group: any;
   groupID: any;
   groupName: string = "";
-  groupList: any;
-  groupString: any;
-  roomName: string = "";
   roomsList: string = "";
   currentRoom: string = "";
   messages: string[] = [];
@@ -34,33 +24,29 @@ export class ChatComponent implements OnInit {
   userRegion: boolean = false;
   roomNotice: string = "";
   numUsers: number= 0;
-  groups: [] = [];
-  username = "";
   role: string = "";
   groupUsers: any = [];
   allUsers: any = [];
   
 
   constructor(
-    private formBuilder: FormBuilder,
     private router: Router,
     private chatService: ChatService,
     private route: ActivatedRoute,
-    private httpClient: HttpClient,
     public userdataService: UserdataService
   ) { 
-    this.groupID = this.route.snapshot.paramMap.get('group_id');
   }
 
   
   ngOnInit(): void {
-    
+    // Get logged in user details from local storage.
     const currUser =  JSON.parse(localStorage.getItem('user')!);
     this.role = currUser.role;
 
+    // Get current groupID from route parameter.
     this.groupID = this.route.snapshot.paramMap.get('group_id');
 
-    // For the super users
+    // Get details fpr curremt group.
     this.userdataService.getgroup(this.groupID).subscribe(group => {
       console.log("Group"+JSON.stringify(group[0]));
       this.group = group[0];
@@ -70,6 +56,7 @@ export class ChatComponent implements OnInit {
       return false;
     });
 
+    // Get users within current group.
     this.userdataService.getgroupusers(this.groupID).subscribe(currentGroup => {
       this.groupUsers = currentGroup;
       console.log("Users"+JSON.stringify(currentGroup));
@@ -78,6 +65,7 @@ export class ChatComponent implements OnInit {
       return false;
     });
 
+    // Get all users from db.
     this.userdataService.getuserlist().subscribe(users => {
       this.allUsers = users;
       console.log("AllUSers"+JSON.stringify(this.allUsers));
@@ -87,6 +75,7 @@ export class ChatComponent implements OnInit {
       return false;
     });
 
+    // Get rooms within current group.
     this.userdataService.getrooms(this.groupID).subscribe(roomList => {
       roomList.forEach( (element) => {
         this.rooms.push(element.room_name);
@@ -113,7 +102,7 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  
+  // Join selected room.
   joinRoom(){
     this.chatService.joinRoom(this.roomsList);
     this.chatService.reqNumUsers(this.roomsList);
@@ -123,10 +112,12 @@ export class ChatComponent implements OnInit {
     this.roomNotice = "A new user has joined";
   }
 
+  // Clear room notices.
   clearNotice() {
     this.roomNotice = "";
   }
 
+  // Leave current room.
   leaveRoom() {
     this.chatService.leaveRoom(this.currentRoom);
     this.chatService.reqNumUsers(this.currentRoom);
@@ -138,6 +129,7 @@ export class ChatComponent implements OnInit {
     this.messages = [];
   }
 
+  // Add room to group.
   addRoom() {
     this.chatService.createRoom(this.newRoom);
     this.currentRoom = this.newRoom
@@ -152,7 +144,7 @@ export class ChatComponent implements OnInit {
       group_id: this.groupID
     }
 
-    // Register user
+    // Add new room to database.
     this.userdataService.createRoom(newRoomObj).subscribe(data => {
       if(data.success){
         alert('A new room has been created');
@@ -164,9 +156,8 @@ export class ChatComponent implements OnInit {
     this.newRoom = "";
   }
   
-
+  // Send message in room.
   sendMessage() {
-    console.log("Message  " + this.messagecontent);
     if(this.messagecontent){
       this.chatService.sendMessage(this.messagecontent);
       this.messagecontent = "";
@@ -175,16 +166,8 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  getById(arr:any, id:any) {
-    for (var d = 0, len = arr.length; d < len; d += 1) {
-        if (arr[d].id === id) {
-            return arr[d];
-        }
-    }
-  }
-
+  // Assign new user to group.
   assignUser(){
-
     const userGroupRoom = {
       user_id: this.newUser,
       group_id: this.groupID
@@ -192,7 +175,7 @@ export class ChatComponent implements OnInit {
 
     alert(JSON.stringify(userGroupRoom));
 
-    // Register user
+    // Assign user to group in database.
     this.userdataService.assign(userGroupRoom).subscribe(data => {
       if(data.success){
         alert('This user has been assigned to the group');
@@ -201,17 +184,10 @@ export class ChatComponent implements OnInit {
       }
     });
 
-    this.userdataService.getgroupusers(this.groupID).subscribe(currentGroup => {
-      this.groupUsers = currentGroup;
-      console.log("Users"+JSON.stringify(currentGroup));
-    }, err => {
-      console.log(err);
-      return false;
-    });
-
     window.location.reload()
   }
 
+  // Remove user from group.
   unassignUser(usergroup_id){
     alert(JSON.stringify(usergroup_id));
     this.userdataService.unassign(usergroup_id).subscribe(data => {
@@ -225,10 +201,11 @@ export class ChatComponent implements OnInit {
     window.location.reload()
   }
 
+  // Delete entire current group.
   deleteGroup(){
     this.userdataService.deleteGroup(this.groupID).subscribe(data => {
       if(data.success){
-        alert('This user has been removed from the group');
+        alert('This group has been removed');
       } else {
         alert('Something went wrong');
       }
@@ -237,10 +214,12 @@ export class ChatComponent implements OnInit {
     this.router.navigate(['/homepage']);
   }
 
+  // Show region listing users.
   showUserRegion() {
     this.userRegion = true;
   }
 
+  // Hide region listing users.
   hideUserRegion() {
     this.userRegion = false;
   }

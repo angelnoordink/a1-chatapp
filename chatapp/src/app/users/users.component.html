@@ -68,7 +68,7 @@
                 <button class="btn btn-primary btn-block mb-4" style="width: 100%;" [disabled] ="myrole != 'super_user'" (click)="updateRole(user)">Update </button>
             </div>
             <div class="col-3">
-                <button class="btn btn-danger btn-block mb-4" style="width: 100%;" [disabled] ="myrole != 'super_user'" (click)="deleteUser(user.id)">Delete </button>
+                <button class="btn btn-danger btn-block mb-4" style="width: 100%;" [disabled] ="myrole != 'super_user'" (click)="deleteUser(user._id)">Delete </button>
             </div>
         </div>
     </div>

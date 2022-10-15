@@ -7,7 +7,7 @@ const Group = require('../models/group');
 const UserGroup = require('../models/user_group');
 const Room = require('../models/room');
 
-// Add group
+// Add/Create group.
 router.post('/add', (req, res, next) => {
     let newGroup = new Group({
         group_name: req.body.group_name
@@ -22,7 +22,7 @@ router.post('/add', (req, res, next) => {
     });
 });
 
-// Get all groups
+// Get all groups.
 router.get('/groups', (req, res, next) => {
     Group.find({}, function(err, groups) {
         res.send(groups);
@@ -30,7 +30,7 @@ router.get('/groups', (req, res, next) => {
 });
 
 
-// Get group from ID
+// Get group details for specific group.
 router.get('/group/:groupId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
@@ -39,7 +39,7 @@ router.get('/group/:groupId', (req, res, next) => {
     });
 });
 
-// Delete Group
+// Delete Group.
 router.delete('/group/:groupId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
@@ -52,7 +52,7 @@ router.delete('/group/:groupId', (req, res, next) => {
     });
 });
 
-// Get group users
+// Get users within specific group.
 router.get('/groupusers/:groupId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
@@ -71,7 +71,7 @@ router.get('/groupusers/:groupId', (req, res, next) => {
     ]).then(function (usergroups) { res.json(usergroups); console.log('users', usergroups); });
 });
 
-// Get rooms
+// Get rooms within specific grouo.
 router.get('/room/:groupId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 
@@ -80,7 +80,7 @@ router.get('/room/:groupId', (req, res, next) => {
     });
 });
 
-// Create room
+// Create room within specific group.
 router.post('/room', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
     roomName = req.body.room_name;
@@ -100,7 +100,7 @@ router.post('/room', (req, res, next) => {
     });
 });
 
-// Delete Room
+// Delete Room.
 router.delete('/room/:roomId', (req, res, next) => {
     var ObjectId = require('mongodb').ObjectId; 
 

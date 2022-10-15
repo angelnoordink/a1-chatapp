@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 io.on('connection', (socket) => {
 
   socket.on('message', (message) => {
-    console.log(message);
+    console.log("TEST"+message);
     io.emit('message', `${socket.id.substr(0, 2)}: ${message}`);
   });
 

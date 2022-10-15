@@ -1,22 +1,19 @@
-import { NgIfContext } from '@angular/common';
-import { NotExpr } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { io } from "socket.io-client";
 
 
-
 @Injectable({
   providedIn: 'root'
 })
+
 export class ChatService {
   public message$: BehaviorSubject<string> = new BehaviorSubject('');
   
   constructor() {}
 
-  socket = io('http://localhost:3000');
+  socket = io('http://localhost:3000/chat');
 
-  
   joinRoom(selRoom: any): void {
     this.socket.emit("joinRoom", selRoom);
   }
@@ -49,7 +46,6 @@ export class ChatService {
     this.socket.on('roomList', res=>next(res));
   }
   
-
   getGroups(next:any) {
     this.socket.on('getGroups', res=>next(res));
   }
@@ -58,11 +54,10 @@ export class ChatService {
     this.socket.on('notice', res=>next(res));
   }
 
-  getMessage () {
+  getMessage() {
     this.socket.on('message', (message) =>{
       this.message$.next(message);
     });
-
     return this.message$.asObservable();
   }
 

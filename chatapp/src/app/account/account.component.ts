@@ -11,26 +11,21 @@ export class AccountComponent implements OnInit {
   username: String = '';
   email: String = '';
   role: String = '';
-  myrole: string = "";
-  groupList = [];
 
-  roleList: any =["Super_Admin","Group_Admin","Group_Assis","Member"];
+  roleList: any =["super_admin","group_admin","group_assis","member"];
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    
   ) { 
-    this.myrole = localStorage.getItem('role')!;
   }
 
   ngOnInit() {
+    // Get logged in user details.
     this.authService.getProfile().subscribe(profile => {
-      console.log(profile.user);
       this.username = profile.username;
       this.email = profile.email;
       this.role = profile.role;
-      this.groupList = profile.groupList;
     },
     err => {
       console.log(err);

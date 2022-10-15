@@ -20,20 +20,22 @@ const UserSchema = mongoose.Schema({
         type: String,
         default: 'member'
     }
-
 });
 
 const User = module.exports = mongoose.model('User', UserSchema);
 
+// Retrieves specific user from database by ID.
 module.exports.getUserById = function(id, callback){
     User.findById(id, callback);
 }
 
+// Retrieves specific user from database by username.
 module.exports.getUserByUsername = function(username, callback){
     const query = {username: username};
     User.findOne(query, callback);
 }
 
+// Encrypts user password before adding to database for data protection.
 module.exports.addUser = function(newUser, callback){
     bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
