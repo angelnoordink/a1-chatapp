@@ -26,7 +26,7 @@ Rooms is an array that consist of a room object. A room has an id and a room nam
 | USER              | <ins>user_id<ins>     | Int()                 | Primary Key, Unique, Incr.                                          |
 |                   | user_name             | String(20)            |                                                                     |
 |                   | email_address         | String(50)            | e.g. example@google.com.                                            |
-|                   | super_admin_ind       | Boolean()             | True if super_admin.                                                |
+|                   | role                  | String()              | e.g.'super_user','group_admim','group_assis" and 'member'.          |
 |                   | password              | String(20)            | Encrypted for safety, minimum 7 characters.                         |
 | GROUP             | <ins>group_id<ins>    | Int()                 | Primary Key, Unique, Incr.                                          |
 |                   | group_name            | String(50)            |                                                                     |
@@ -35,12 +35,6 @@ Rooms is an array that consist of a room object. A room has an id and a room nam
 |                   | *group_id*            | Int()                 | Foreign Key (References group.group_id).                            |
 | USER_GROUP        | <ins>*user_id*<ins>   | Int()                 | Primary Key, Foreign Key (References user.user_id).                 |
 |                   | *group_id*            | Int()                 | Primary Key, Foreign Key (References group.group_id).               |
-|                   | role                  | Enum()                | Options will include; 'Group_Admin', 'Group_Assis" and 'Member'.    |
-| MESSAGE           | <ins>message_id<ins>  | Init()                | Primary Key, Unique, Incr.                                          |
-|                   | message               | String(5000)          |                                                                     |
-|                   | *group_id*            | Int()                 | Foreign Key (References group.group_id).                            |
-|                   | *user_id*             | Int()                 | Foreign Key (References user.user_id).                              |
-|                   | *room_id*             | Int()                 | Foreign Key (References room.room_id).                              |
 
 ### Database ERD
 <img src="https://github.com/angelnoordink/a1-chatapp/blob/main/documentation/ERD.png?raw=true" width="600" height="600"/>
