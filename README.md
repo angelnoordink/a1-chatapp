@@ -37,12 +37,12 @@ Rooms is an array that consist of a room object. A room has an id and a room nam
 |                   | *group_id*            | Int()                 | Primary Key, Foreign Key (References group.group_id).               |
 
 ### Database ERD
-<img src="https://github.com/angelnoordink/a1-chatapp/blob/main/documentation/ERD.png?raw=true" width="600" height="600"/>
+<img src="https://github.com/angelnoordink/a1-chatapp/blob/main/documentation/ERD.png?raw=true" width="800" height="600"/>
 
 ---
 ## REST API
-To be completed ...
-http://localhost:3000/
+Rest API routes were used throughout the project as a way of communicating between the client side and server side. The database used to store all the data for the project was  MongoDB, and the easiest way to communicate with this database was through API's.
+
 
 ### Register User
 This api end-point adds new user to user collection in the db. This route will be called on the action of 'Create User'. By default the role of the user will be set as 'member'. 
@@ -70,8 +70,6 @@ This api end-point adds new user to user collection in the db. This route will b
 }  
 ```
 
-
-
 ### Authenticate User
 This api end-point authenticates the current user by checking that the user exists within the user collection in the db, as well as checking that the password matches. This route will be called on submission of the user login form and if response is not successful the login will fail.
 
@@ -98,20 +96,14 @@ This api end-point authenticates the current user by checking that the user exis
         id: string,
         username: string,
         email: string,
-        role: string,
-        groupList: [
-             {
-                 _id: string,
-                 group_id: string
-             }
-        ]
+        role: string
     }
 } 
 ```
 
 
 ### Get User Profile
-This api end-point retrieves the current users details from the user collection in the db. This route will be called on init of the homepage in order to display the corresponding groups for the selected user.
+This api end-point retrieves the current users details from the user collection in the db. This route will be called on init of the homepage in order to display the details of the user.
 
 **Route:** `/users/profile`  
 **Method:** `GET`  
@@ -126,19 +118,30 @@ This api end-point retrieves the current users details from the user collection 
     id: string,
     username: string,
     email: string,
-    role: string,
-    groupList: [
-         {
-             _id: string,
-             group_name: string,
-             roomList: [
-                   {  room_id: string  }
-             ]
-         }
-    ]
+    password: string,
+    role: string
 } 
 ```
 
+### Get User From ID
+This api end-point retrieves the current users assigned groups from a given user ID.  The userId is specified through the query parameter. This route will be called on init of the homepage in order to display the corresponding groups for the selected user.
+
+**Route:** `/users/user/:userId`  
+**Method:** `GET`  
+**Response Body:**   
+```
+[
+    {
+        _id: string,
+        user_id: string,
+        group_id: string,
+        group: {
+             _id: string,
+             group_name: string
+        }
+    } 
+]
+```
 
 ### Get All Users
 This api end-point retrieves all of the users within the user collection in the db. This route will be called on init of the users page.
@@ -152,26 +155,22 @@ This api end-point retrieves all of the users within the user collection in the 
         id: string,
         username: string,
         email: string,
-        role: string,
-        groupList: [
-             {
-                 _id: string,
-                 group_id: string
-             }
-        ]
+        role: string
     } 
 ]
 ```
 
 
 ### Update User
-```diff
-@@ UPDATE SECTION @@
-```
 This api end-point updates the specific user within the user collection in the db. The user_id is specified through the query parameter 'userId' which is to be of type string. This route will be called on the action of updating user details or setting the user role.
 
 **Route:** `/users/user/:userId`  
-**Method:** `PATCH`  
+**Method:** `PATCH` 
+**Header Parameters:**
+| Key                       | Value                        |
+| ------------------------- | -----------------------------|
+| Content-Type              | application/json             |
+
 **Request Body:**
 ```
 {
@@ -183,15 +182,13 @@ This api end-point updates the specific user within the user collection in the d
 **Response Body:**   
 ```
 {
-
+    success: boolean,
+    msg: string
 }  
 ```
 
 
 ### Delete User
-```diff
-@@ UPDATE SECTION @@
-```
 This api end-point deletes the specific user from the user collection in the db. The user_id is specified through the query parameter 'userId' which is to be of type string. This route will be called on the action of deleting the user.
 
 **Route:** `/users/user/{userId}`  
@@ -199,7 +196,8 @@ This api end-point deletes the specific user from the user collection in the db.
 **Response Body:**   
 ```
 {
-
+    success: boolean,
+    msg: string
 }  
 ```
 
@@ -212,87 +210,188 @@ This api end-point retrieves all of the groups within the group collection in th
 ```
 [
     {
-        id: string,
-        group_name: string,
-        roomList: [
-             {
-                 _id: string,
-                 room_id: string
-             }
-        ]
+        _id: string,
+        group_name: string
     } 
 ]
 ```
 
 
 ### Get Group Details
-This api end-point retrieves the current group details from the group collection in the db. The group_id is specified through the query parameter 'groupId' which is to be of type string. This route will be called after routing to the messages page to get the selected group.
-```diff
-@@ UPDATE SECTION @@
-```
+This api end-point retrieves the current group details from the group collection in the db. The group_id is specified through the query parameter.
+
 **Route:** `/groups/group/:groupId`  
+**Method:** `GET`  
+**Response Body:**   
+```
+{
+    id: string,
+    group_name: string,
+} 
+```
+
+
+### Create Group
+This api end-point adds new group to grou[ collection in the db. This route will be called on the action of 'Create Group'. 
+
+**Route:** `/groups/add`  
+**Method:** `POST`  
+**Header Parameters:**
+| Key                       | Value                        |
+| ------------------------- | -----------------------------|
+| Content-Type              | application/json             |
+
+**Request Body:**
+```
+{
+    group_name: string
+}
+```
+**Response Body:**   
+```
+{
+    success: boolean,
+    msg: string
+}  
+```
+
+
+### Delete Group
+This api end-point deletes the specific group from the group collection in the db. The group_id is specified through the query parameter 'groupId' which is to be of type string. This route will be called on the action of deleting the group.
+
+**Route:** `/groups/group/{groupId}`  
+**Method:** `DELETE`  
+**Response Body:**   
+```
+{
+    success: boolean,
+    msg: string
+}  
+```
+
+
+### Get Group Users
+This api end-point retrieves current groups assigned users.  The groupId is specified through the query parameter and is of type string. This route will be called on init of the chat page in order to display the corresponding users for the selected group.
+
+**Route:** `/groups/groupusers/:groupId`  
 **Method:** `GET`  
 **Response Body:**   
 ```
 [
     {
-        id: string,
-        group_name: string,
-        roomList: [
-             {
-                 _id: string,
-                 room_id: string
-             }
-        ]
+        _id: string,
+        user_id: string,
+        group_id: string,
+        user: {
+             _id: string,
+             username: string,
+             email: string,
+             password: string,
+             role: string
+        }
+    } 
+]
+```
+
+### Assign User to Group 
+This api end-point adds a user to a group or vise versa by adding a group ID and user ID to a joining table. This route will be called on init of the homepage and chat page and will be used to see which users belong to which groups, and which groups belong to which users. This route was implemented to solve a relational problem between the 2 tables.
+
+**Route:** `/users/assign`  
+**Method:** `POST`  
+**Header Parameters:**
+| Key                       | Value                        |
+| ------------------------- | -----------------------------|
+| Content-Type              | application/json             |
+
+**Request Body:**
+```
+{
+    group_id: string, 
+    user_id: string
+}
+```
+**Response Body:**   
+```
+{
+    success: boolean,
+    msg: string
+}  
+```
+
+### Remove User from Group 
+This api end-point removes a link between a user and a group without affecting the individual records. This route will be called to remove the user from the group on the chat page. The user group id is specified through the query parameter 'userGroupId' which is to be of type string. 
+
+**Route:** `/users/{userGroupId}`  
+**Method:** `DELETE`  
+**Response Body:**   
+```
+{
+    success: boolean,
+    msg: string
+}  
+```
+
+
+### Get Group Rooms
+This api end-point retrieves current groups assigned rooms.  The groupId is specified through the query parameter and is of type string. This route will be called on init of the chat page in order to display the corresponding rooms for the selected group.
+
+**Route:** `/groups/room/:groupId`  
+**Method:** `GET`  
+**Response Body:**   
+```
+[
+    {
+        _id: string,
+        room_name: string,
+        group_id: string
     } 
 ]
 ```
 
 
-### Create Group
-
-### Delete Group
-
-### Get Group Users
-
-### Get Group Rooms
-
-### Remove User from Group 
-
-### Assign User to Group 
-
 ### Create Room
+This api end-point creates a room and assigns it to a specific group. The groupId is specified through the query parameter and is of type string. This route will be called on the create evemt of rooms in the chat componenent.
 
-### Delete Room
+**Route:** `/groups/room`  
+**Method:** `POST`  
+**Header Parameters:**
+| Key                       | Value                        |
+| ------------------------- | -----------------------------|
+| Content-Type              | application/json             |
+
+**Request Body:**
+```
+{
+    room_name: string,
+    group_id: string
+}
+```
+**Response Body:**   
+```
+{
+    success: boolean,
+    msg: string
+}  
+```
 
 
 
 ---
 ## Angular Architecture
-### Login
-Login was the default route for the program, consisting of a simple login form with inputs for username and password and a submit button. The login authenticates the user by ensuring that the correct details are entered and already exist in the database.
-### Chat
-The chat is the main feature of the site including a the messaging feature where users are able to select a group or room and send/recieve live messages via sockets.
-### Permissions
-Permissions were utilised througout the site to provide and limit access to specific users based on their role.
-### User Management Console
-The user management console allows the key users to manage other site users via changing roles, assigning to groups, and deleting where necessary.
-### Account
-The account allows the user to view and update their personal details.
-### Server
-Using Express.js, cors, etc. A description of how you divide the responsibilities between client and server (you are encouraged to have the server provide a REST API which returns JSON in addition to a static directory).
-### Sockets
-The account allows the user to view and update their personal details.
-### Database
-The account allows the user to view and update their personal details.
-### Video Call feature
-The account allows the user to view and update their personal details.
-### Testing
-The account allows the user to view and update their personal details.
-### User Interface Design.
-The account allows the user to view and update their personal details.
+### Components
+- **Login:** The login is the default route for the program, consisting of a simple login form with inputs for username and password and a submit button. The login authenticates the user by ensuring that the correct details are entered and already exist in the database.
+- **Homepage:** The homepage is the first component that displays after login and shows the assigned groups for the logged in user, by clicking on one of these groups, the user will route to the chat page for that group. The homepage also has a create group field where certain user types can add new groups.
+- **Users:** The users componet allows the key users to manage other site users via changing roles, assigning to groups, and deleting where necessary.
+- **Account:** The account component allows the user to view and update their personal details.
+- **Chat:** The chat component is the main feature of the site including a the messaging feature where users are able to select a group or room and send/recieve live messages via sockets. The chat component also displays the list of users within the group and allows certain user types to add or delete users from the group.
 
 
+### Services
+- **Auth Service:** The auth service is used store Rest API routes and functions that are used to communicate with the database for auth related operations
+- **Authguard Service:** The authguard service is used to protect the application's routes by ensuring that the user is logged in and activated before they can access any restricted components.
+- **Chat Service:** The chat service was made to communicate with the websockets for the chat as well as store relevant chat operations. The chat service allows for multiple sockets to be run at a time and for multiple users to communicate on one socket, providing real-time communication.
+- **Userdata Service:** The userdata service is used store most of the Rest API routes and functions that are used to communicate with the database for the user, group, and room collections.
+- **Validate Service:** The validate service is used to validate the user in the registration process, validating the form fields before allowing the user to successfully register/login.
 
 
 ---
